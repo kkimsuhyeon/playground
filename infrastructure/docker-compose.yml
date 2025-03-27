@@ -1,19 +1,19 @@
 services:
-  consul-server:
-    image: hashicorp/consul:latest
-    container_name: consul-server
-    restart: always
-    volumes:
+  consul-server:                        # 서비스 이름
+    image: hashicorp/consul:latest      # 어떤 이미지 사용할지
+    container_name: consul-server       # 컨테이너 이름 설정
+    restart: always                     # 컨테이너가 종료되면 자동으로 재시작
+    volumes:                            # 볼륨 설정
       - consul-data:/consul/data
       - consul-config:/consul/config
-    ports:
+    ports:                              # consul 관련 port
       - "8500:8500"
       - "8600:8600"
       - "8600:8600/udp"
     environment:
       - CONSUL_BIND_INTERFACE=eth0
       - CONSUL_CLIENT_INTERFACE=eth0
-    command: >
+    command: >                          # > 이걸 통해서 줄바꿈해도 한줄로 인식
       agent -server
       -bootstrap-expect=1
       -ui

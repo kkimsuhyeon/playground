@@ -5,10 +5,13 @@ spring:
   application:
     name: api-gateway
 
+  config:
+    import: "optional:consul:"
+
   cloud:
     consul:
-      host: localhost
-      port: 8500
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
       discovery:
         instance-id: ${spring.application.name}:${random.value}
         health-check-path: /actuator/health
@@ -19,7 +22,7 @@ spring:
         format: YAML
         prefixes: config
         default-context: application
-        profile-separator: ,
+        profile-separator: ','
 
     gateway:
       discovery:
@@ -36,3 +39,7 @@ management:
   endpoint:
     health:
       show-details: always
+
+# SPRING_PROFILES_ACTIVE
+# CONSUL_HOST
+# CONSUL_PORT
