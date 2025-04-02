@@ -6,12 +6,14 @@ spring:
     name: api-gateway
 
   config:
-    import: "optional:consul:"
+    import: "consul:"
+    activate:
+      on-profile: local
 
   cloud:
     consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
+      host: localhost
+      port: 8500
       discovery:
         instance-id: ${spring.application.name}:${random.value}
         health-check-path: /actuator/health
@@ -30,6 +32,11 @@ spring:
           enabled: true
           lower-case-service-id: true
 
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates: Path=/api/v*/users/**
+
 management:
   endpoints:
     web:
@@ -39,7 +46,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-# SPRING_PROFILES_ACTIVE
-# CONSUL_HOST
-# CONSUL_PORT
