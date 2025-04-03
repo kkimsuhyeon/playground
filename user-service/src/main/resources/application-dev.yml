@@ -22,6 +22,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://user-db:3306/user_service_db?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: user
-    password: user
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 

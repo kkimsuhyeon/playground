@@ -75,6 +75,8 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - CONSUL_HOST=consul-server
       - CONSUL_PORT=8500
+      - DB_USERNAME=user
+      - DB_PASSWORD=user
     depends_on:
       - api-gateway
     networks:
