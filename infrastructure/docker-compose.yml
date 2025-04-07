@@ -1,5 +1,3 @@
-version: '3.1'
-
 services:
   consul-server: # 서비스 이름
     image: hashicorp/consul:latest      # 어떤 이미지 사용할지
