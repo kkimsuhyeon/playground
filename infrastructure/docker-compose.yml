@@ -55,7 +55,8 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - JWT_SECRET=123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd
-
+      - CONFIG_SERVER_USER=user
+      - CONFIG_SERVER_PASSWORD=user
 
   api-gateway:
     build:
