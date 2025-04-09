@@ -6,9 +6,14 @@ spring:
     name: api-gateway
 
   config:
-    import: "optional:consul:"
+    import: "consul:"
+    activate:
+      on-profile: local
 
   cloud:
+    config:
+      uri: http://config-server:8888
+      fail-fast: true
     consul:
       host: ${CONSUL_HOST:localhost}
       port: ${CONSUL_PORT:8500}
@@ -31,9 +36,12 @@ spring:
           lower-case-service-id: true
 
       routes:
-        - id : user-service
+        - id: user-service
           uri: lb://user-service
           predicates: Path=/api/v*/users/**
+
+jwt:
+  secret: ${JWT_SECRET}
 
 management:
   endpoints:

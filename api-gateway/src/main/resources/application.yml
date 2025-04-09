@@ -11,6 +11,10 @@ spring:
       on-profile: local
 
   cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: false
+
     consul:
       host: ${CONSUL_HOST:localhost}
       port: ${CONSUL_PORT:8500}
@@ -33,9 +37,13 @@ spring:
           lower-case-service-id: true
 
       routes:
-        - id: user-service
+        - id: user-service-route
           uri: lb://user-service
           predicates: Path=/api/v*/users/**
+
+jwt:
+  secret:
+    ${JWT_SECRET: 12345678901234567890123456789012}
 
 management:
   endpoints:
