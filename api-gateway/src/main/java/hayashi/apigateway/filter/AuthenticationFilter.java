@@ -42,6 +42,15 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 return onError(exchange, "No Authorization header", HttpStatus.UNAUTHORIZED);
             }
 
+            String authHeader = request.getHeaders().getFirst(AUTHORIZATION_HEADER);
+
+            if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
+                return onError(exchange, "Invalid Authorization header format", HttpStatus.UNAUTHORIZED);
+            }
+
+            String token = authHeader.replace(BEARER_PREFIX, "");
+
+
             return chain.filter(exchange.mutate().build());
         };
     }
