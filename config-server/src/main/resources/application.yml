@@ -10,7 +10,7 @@ spring:
         git:
           uri: https://github.com/kkimsuhyeon/playground
           default-label: main
-          search-paths: config-files/{application}, config-files/common
+          search-paths: config-files/common
 
   security:
     user:

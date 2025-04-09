@@ -15,12 +15,12 @@ spring:
   cloud:
     config:
       uri: http://config-server:8888
-      username: ${CONFIG_SERVER_USERNAME}
-      password: ${CONFIG_SERVER_PASSWORD}
+      username: user
+      password: user
       fail-fast: true
     consul:
-      host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
+      host: consul-server
+      port: 8500
       discovery:
         instance-id: ${spring.application.name}:${random.value}
         health-check-path: /actuator/health
