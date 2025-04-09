@@ -44,6 +44,19 @@ services:
     networks:
       - microservice-network
 
+  config-server:
+    build:
+      context: ../config-server
+      dockerfile: Dockerfile
+    container_name: config-server
+    restart: always
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - JWT_SECRET=123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd
+
+
   api-gateway:
     build:
       context: ../api-gateway
