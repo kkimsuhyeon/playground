@@ -57,6 +57,8 @@ services:
       - JWT_SECRET=123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd123asd
       - CONFIG_SERVER_USER=user
       - CONFIG_SERVER_PASSWORD=user
+    networks:
+      - microservice-network
 
   api-gateway:
     build:
@@ -70,8 +72,11 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - CONSUL_HOST=consul-server
       - CONSUL_PORT=8500
+      - CONFIG_SERVER_USER=user
+      - CONFIG_SERVER_PASSWORD=user
     depends_on:
       - consul-server
+      - config-server
     networks:
       - microservice-network
 
@@ -91,6 +96,7 @@ services:
       - DB_PASSWORD=user
     depends_on:
       - api-gateway
+      - user-db
     networks:
       - microservice-network
 

@@ -6,7 +6,9 @@ spring:
     name: api-gateway
 
   config:
-    import: "consul:"
+    import: 
+      - "consul:"
+      - "configserver:"
     activate:
       on-profile: local
 
