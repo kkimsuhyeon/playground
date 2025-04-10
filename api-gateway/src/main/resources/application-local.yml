@@ -24,7 +24,7 @@ spring:
         format: YAML
         prefixes: config
         default-context: application
-        profile-separator: ','
+        fail-fast: true
 
     gateway:
       discovery:
@@ -33,7 +33,7 @@ spring:
           lower-case-service-id: true
 
       routes:
-        - id: user-service
+        - id: user-service-route
           uri: lb://user-service
           predicates: Path=/api/v*/users/**
 
