@@ -21,7 +21,7 @@ spring:
         prefer-ip-address: true
       config:
         enabled: true
-        format: YAML
+        format: key_value
         prefixes: config
         default-context: application
         fail-fast: true
@@ -36,6 +36,8 @@ spring:
         - id: user-service-route
           uri: lb://user-service
           predicates: Path=/api/v*/users/**
+          filters:
+            - AuthenticationFilter
 
 management:
   endpoints:
