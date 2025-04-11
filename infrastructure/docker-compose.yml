@@ -6,6 +6,7 @@ services:
     volumes: # 볼륨 설정
       - consul-data:/consul/data
       - consul-config:/consul/config
+      - ./config:/consul/init
     ports: # consul 관련 port
       - "8500:8500"
       - "8600:8600"
