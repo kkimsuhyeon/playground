@@ -1,3 +1,10 @@
 [
-  {"key":"config/application/jwt.secret", "value":"YTEyMzEyMzEyMzEyMzEyMzEyM2E="}
+  {
+    "key": "config/application/jwt.secret",
+    "value": "YTEyMzEyMzEyMzEyMzEyMzEyM2E="
+  },
+  {
+    "key": "config/application/jwt.expiration",
+    "value": "ODY0MDAwMDA="
+  }
 ]
