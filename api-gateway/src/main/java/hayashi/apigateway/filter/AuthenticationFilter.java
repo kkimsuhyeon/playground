@@ -79,6 +79,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         private List<String> openApiEndpoints = List.of(
                 "/api/v*/users/login",
                 "/api/v*/users/join",
+                "/api/v*/users/token",
                 "/actuator/**"
         );
 

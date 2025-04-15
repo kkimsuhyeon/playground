@@ -21,7 +21,7 @@ spring:
         prefer-ip-address: true
       config:
         enabled: true
-        format: YAML
+        format: key_value
         prefixes: config
         default-context: application
         fail-fast: true

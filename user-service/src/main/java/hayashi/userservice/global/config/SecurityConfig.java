@@ -1,4 +1,4 @@
-package hayashi.userservice.config.security;
+package hayashi.userservice.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

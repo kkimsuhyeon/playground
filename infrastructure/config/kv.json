@@ -1,7 +1,7 @@
 [
   {
     "key": "config/application/jwt.secret",
-    "value": "YTEyMzEyMzEyMzEyMzEyMzEyM2E="
+    "value": "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXpBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NTY3ODkrLw=="
   },
   {
     "key": "config/application/jwt.expiration",
