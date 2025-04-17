@@ -1,6 +1,9 @@
 server:
   port: 8081
 
+host: "localhost"
+host-url: "http://localhost:8081"
+
 spring:
   application:
     name: user-service
@@ -44,6 +47,14 @@ spring:
   h2:
     console:
       enabled: true
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /user/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /user/swagger-ui.html
 
 logging:
   level:
