@@ -13,7 +13,7 @@ public class SwaggerConfig {
     @Bean
     public RouteLocator swaggerRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route(r -> r.path("/api/v1/users/swagger-ui/index.html").and().method(HttpMethod.GET).uri("lb://user-service"))
+                .route(r -> r.path("/user-service/**").and().method(HttpMethod.GET).uri("lb://user-service"))
                 .build();
     }
 

@@ -51,10 +51,10 @@ spring:
 springdoc:
   api-docs:
     enabled: true
-    path: /user/v3/api-docs
+    path: /user-service/v3/api-docs
   swagger-ui:
     enabled: true
-    path: /user/swagger-ui.html
+    path: /user-service/swagger-ui.html
 
 logging:
   level:

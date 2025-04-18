@@ -22,7 +22,9 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/health-check",
-            "/resource/**"
+            "/resource/**",
+            "/user-service/swagger-ui/**",
+            "/user-service/v3/api-docs/**"
     );
 
     @Bean
