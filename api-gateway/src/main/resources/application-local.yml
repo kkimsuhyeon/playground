@@ -37,7 +37,16 @@ spring:
           uri: lb://user-service
           predicates: Path=/api/v*/users/**
           filters:
+            - RewritePath=/api/v*/users/(?<segment>.*), /$\{segment}
             - AuthenticationFilter
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: user-service
+        url: /user-service/v3/api-docs
+    use-root-path: true
+    path: /swagger-ui.html
 
 management:
   endpoints:

@@ -37,6 +37,9 @@ dependencies {
     // 로깅 및 모니터링
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.6'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:3.4.4'
+
     // JWT 검증을 위한 의존성
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
