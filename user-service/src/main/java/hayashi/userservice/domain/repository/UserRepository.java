@@ -1,4 +1,10 @@
 package hayashi.userservice.domain.repository;
 
-public class UserRepository {
+import hayashi.userservice.domain.model.UserEntity;
+
+import java.util.Optional;
+
+public interface UserRepository {
+
+    Optional<UserEntity> findById(String id);
 }
