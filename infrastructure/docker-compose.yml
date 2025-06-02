@@ -1,33 +1,30 @@
+version: '3.8'
+
 services:
-  consul-server: # 서비스 이름
-    image: hashicorp/consul:latest      # 어떤 이미지 사용할지
-    container_name: consul-server       # 컨테이너 이름 설정
-    restart: always                     # 컨테이너가 종료되면 자동으로 재시작
-    volumes: # 볼륨 설정
+  consul-server:
+    # 서비스 이름
+    build:
+      context: .
+      dockerfile: consul.Dockerfile
+    container_name: consul-server # 컨테이너 이름 설정
+    restart: always # 컨테이너가 종료되면 자동으로 재시작
+    volumes:
+      # 볼륨 설정
       - consul-data:/consul/data
       - consul-config:/consul/config
-      - ./config:/consul/init
-    ports: # consul 관련 port
+    ports:
+      # consul 관련 port
       - "8500:8500"
       - "8600:8600"
       - "8600:8600/udp"
-    environment:
-      - CONSUL_BIND_INTERFACE=eth0
-      - CONSUL_CLIENT_INTERFACE=eth0
-    command: >                          # > 이걸 통해서 줄바꿈해도 한줄로 인식
-      agent -server
-      -bootstrap-expect=1
-      -ui
-      -node=consul-server
-      -bind=0.0.0.0
-      -client=0.0.0.0
-      -data-dir=/consul/data
-      -config-dir=/consul/config
-      -enable-script-checks=true
-      -log-level=info
-      -retry-join=consul-server
     networks:
       - microservice-network
+    healthcheck:
+      test: ["CMD", "consul", "health", "status", "leader"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   user-db:
     image: mysql
@@ -45,6 +42,23 @@ services:
     networks:
       - microservice-network
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--requirepass", "test123" ]
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "test123", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - redis-data:/data
+    networks:
+      - microservice-network
+
   api-gateway:
     build:
       context: ../api-gateway
@@ -58,7 +72,12 @@ services:
       - CONSUL_HOST=consul-server
       - CONSUL_PORT=8500
     depends_on:
-      - consul-server
+      consul-server:
+        condition: service_healthy
+      user-db:
+        condition: service_started
+      redis:
+        condition: service_healthy
     networks:
       - microservice-network
 
@@ -77,7 +96,8 @@ services:
       - DB_USERNAME=user
       - DB_PASSWORD=user
     depends_on:
-      - api-gateway
+      api-gateway:
+        condition: service_started
     networks:
       - microservice-network
 
@@ -85,6 +105,8 @@ volumes:
   consul-data:
   consul-config:
   user-db-data:
+  redis-data:
+
 
 networks:
   microservice-network:
