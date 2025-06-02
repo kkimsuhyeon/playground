@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # 기본값 지정 (옵션)
 : "${CONSUL_BIND_INTERFACE:=eth0}"
 : "${CONSUL_CLIENT_INTERFACE:=eth0}"
