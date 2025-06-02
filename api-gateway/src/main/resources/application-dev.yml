@@ -6,7 +6,9 @@ spring:
     name: api-gateway
 
   config:
-    import: "optional:consul:"
+    import: "consul:"
+    activate:
+      on-profile: dev
 
   cloud:
     consul:
@@ -19,10 +21,10 @@ spring:
         prefer-ip-address: true
       config:
         enabled: true
-        format: YAML
+        format: key_value
         prefixes: config
         default-context: application
-        profile-separator: ','
+        fail-fast: true
 
     gateway:
       discovery:
@@ -34,6 +36,18 @@ spring:
         - id : user-service
           uri: lb://user-service
           predicates: Path=/api/v*/users/**
+          filters:
+            - RewritePath=/api/v*/users/(?<segment>.*), /$\{segment}
+            - AuthenticationFilter
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: user-service
+        url: /user-service/v3/api-docs
+    use-root-path: true
+    path: /swagger-ui.html
+
 
 management:
   endpoints:
