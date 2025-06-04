@@ -20,7 +20,7 @@ services:
     networks:
       - microservice-network
     healthcheck:
-      test: ["CMD", "consul", "health", "status", "leader"]
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
       interval: 10s
       timeout: 5s
       retries: 5
