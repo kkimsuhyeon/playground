@@ -1,7 +1,7 @@
-package hayashi.userservice.global.annotation;
+package hayashi.userservice.common.annotation;
 
 
-import hayashi.userservice.global.generator.TsIdGenerator;
+import hayashi.userservice.common.generator.TsIdGenerator;
 import org.hibernate.annotations.IdGeneratorType;
 
 import java.lang.annotation.ElementType;

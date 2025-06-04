@@ -1,4 +1,4 @@
-package hayashi.userservice.global.config;
+package hayashi.userservice.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,8 @@ public class SecurityConfig {
             "/health-check",
             "/resource/**",
             "/user-service/swagger-ui/**",
-            "/user-service/v3/api-docs/**"
+            "/user-service/v3/api-docs/**",
+            "/actuator/**"
     );
 
     @Bean
