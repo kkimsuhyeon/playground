@@ -21,12 +21,15 @@ public abstract class BaseRedisTemplate {
     protected RedisConnectionFactory createFactory(RedisDatabaseType type) {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
 
-        redisStandaloneConfiguration.setHostName(host);
-        redisStandaloneConfiguration.setPort(port);
-        redisStandaloneConfiguration.setPassword(password);
+        redisStandaloneConfiguration.setHostName("39.115.161.51");
+        redisStandaloneConfiguration.setPort(6379);
+        redisStandaloneConfiguration.setPassword("test123");
         redisStandaloneConfiguration.setDatabase(type.getCode());
 
-        return new LettuceConnectionFactory(redisStandaloneConfiguration);
+        LettuceConnectionFactory factory = new LettuceConnectionFactory(redisStandaloneConfiguration);
+        factory.afterPropertiesSet();
+
+        return factory;
     }
 
     /**
@@ -34,12 +37,11 @@ public abstract class BaseRedisTemplate {
      * 해당 구성된 RedisTemplate을 통해서 데이터 통신으로 처리되는 대한 직렬화를 수행합니다.
      **/
     protected void setSerializer(RedisTemplate<String, Object> template) {
-        StringRedisSerializer serializer = new StringRedisSerializer();
-        template.setKeySerializer(serializer);
-        template.setValueSerializer(serializer);
-        template.setHashKeySerializer(serializer);
-        template.setHashValueSerializer(serializer);
-        template.setDefaultSerializer(serializer);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new StringRedisSerializer());
+        template.setDefaultSerializer(new StringRedisSerializer());
     }
 
     /**

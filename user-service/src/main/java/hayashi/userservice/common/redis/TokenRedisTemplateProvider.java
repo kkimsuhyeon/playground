@@ -7,21 +7,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenRedisTemplateProvider extends BaseRedisTemplate implements TypedRedisTemplateProvider {
 
-    private final RedisDatabaseType redisDatabaseType = RedisDatabaseType.TOKEN;
+    private static final RedisDatabaseType redisDatabaseType = RedisDatabaseType.TOKEN;
+
+    private final RedisTemplate<String, Object> template;
+
+    public TokenRedisTemplateProvider() {
+        this.template = new RedisTemplate<>();
+
+        RedisConnectionFactory factory = createFactory(redisDatabaseType);
+        template.setConnectionFactory(factory);
+        setSerializer(template);
+        template.afterPropertiesSet();
+    }
 
     @Override
     public RedisDatabaseType getType() {
-        return this.redisDatabaseType;
+        return redisDatabaseType;
     }
 
     @Override
     public RedisTemplate<String, Object> getTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-
-        RedisConnectionFactory factory = createFactory(this.redisDatabaseType);
-        template.setConnectionFactory(factory);
-        setSerializer(template);
-
         return template;
     }
 }
