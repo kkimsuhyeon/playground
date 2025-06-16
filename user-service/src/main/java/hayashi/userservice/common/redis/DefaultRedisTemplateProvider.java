@@ -9,6 +9,18 @@ public class DefaultRedisTemplateProvider extends BaseRedisTemplate implements T
 
     private final RedisDatabaseType redisDatabaseType = RedisDatabaseType.DEFAULT;
 
+    private final RedisTemplate<String, Object> template;
+
+    public DefaultRedisTemplateProvider(RedisProperties redisProperties) {
+        super(redisProperties);
+        this.template = new RedisTemplate<>();
+
+        RedisConnectionFactory factory = createFactory(redisDatabaseType);
+        template.setConnectionFactory(factory);
+        setSerializer(template);
+        template.afterPropertiesSet();
+    }
+
     @Override
     public RedisDatabaseType getType() {
         return this.redisDatabaseType;
@@ -16,12 +28,6 @@ public class DefaultRedisTemplateProvider extends BaseRedisTemplate implements T
 
     @Override
     public RedisTemplate<String, Object> getTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-
-        RedisConnectionFactory factory = createFactory(this.redisDatabaseType);
-        template.setConnectionFactory(factory);
-        setSerializer(template);
-
         return template;
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.concurrent.TimeUnit;
+
 @Repository
 @RequiredArgsConstructor
 public class TokenRedisRepository {
@@ -18,7 +20,7 @@ public class TokenRedisRepository {
     private final ObjectMapper objectMapper;
 
     public void saveToken(String key, String token) {
-        getTemplate().opsForValue().set(key, token, expiration);
+        getTemplate().opsForValue().set(key, token, expiration, TimeUnit.MILLISECONDS);
     }
 
     public String getTokenByKey(String key) {

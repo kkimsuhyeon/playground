@@ -1,6 +1,5 @@
 package hayashi.userservice.common.redis;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -9,21 +8,18 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 public abstract class BaseRedisTemplate {
 
-    @Value("${spring.data.redis.host}")
-    private String host;
+    private final RedisProperties redisProperties;
 
-    @Value("${spring.data.redis.port}")
-    private int port;
-
-    @Value("${spring.data.redis.password}")
-    private String password;
+    public BaseRedisTemplate(RedisProperties redisProperties) {
+        this.redisProperties = redisProperties;
+    }
 
     protected RedisConnectionFactory createFactory(RedisDatabaseType type) {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
 
-        redisStandaloneConfiguration.setHostName("39.115.161.51");
-        redisStandaloneConfiguration.setPort(6379);
-        redisStandaloneConfiguration.setPassword("test123");
+        redisStandaloneConfiguration.setHostName(redisProperties.getHost());
+        redisStandaloneConfiguration.setPort(redisProperties.getPort());
+        redisStandaloneConfiguration.setPassword(redisProperties.getPassword());
         redisStandaloneConfiguration.setDatabase(type.getCode());
 
         LettuceConnectionFactory factory = new LettuceConnectionFactory(redisStandaloneConfiguration);

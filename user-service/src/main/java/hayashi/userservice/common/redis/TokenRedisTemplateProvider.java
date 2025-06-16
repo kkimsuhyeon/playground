@@ -11,7 +11,8 @@ public class TokenRedisTemplateProvider extends BaseRedisTemplate implements Typ
 
     private final RedisTemplate<String, Object> template;
 
-    public TokenRedisTemplateProvider() {
+    public TokenRedisTemplateProvider(RedisProperties redisProperties) {
+        super(redisProperties);
         this.template = new RedisTemplate<>();
 
         RedisConnectionFactory factory = createFactory(redisDatabaseType);
