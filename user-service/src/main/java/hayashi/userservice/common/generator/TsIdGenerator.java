@@ -15,7 +15,7 @@ public class TsIdGenerator implements IdentifierGenerator {
         String prefix = extractPrefix(session, entity);
         long tsId = TsidCreator.getTsid().toLong();
 
-        log.info("Generate tsId for entity {}", entity);
+        log.info("Generate tsId for entity of type {}", entity.getClass().getSimpleName());
         log.info("Generate tsId: {}", tsId);
 
         return prefix + tsId;

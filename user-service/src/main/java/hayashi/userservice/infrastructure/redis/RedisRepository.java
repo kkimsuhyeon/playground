@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 public abstract class RedisRepository {
 
     private final RedisTemplateFactory redisTemplateFactory;
-    private final ObjectMapper objectMapper;
 
     public void setValueForKey(RedisDatabaseType type, String key, String value) {
         redisTemplateFactory.getValueOps(type).set(key, value);

@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 public class UserEntity extends BaseEntity {
 
     @Id
-    @TsId(prefix = "")
-    @Column(name = "user_id", nullable = false, updatable = false, length = 15)
+    @TsId(prefix = "USER_")
+    @Column(name = "user_id", nullable = false, updatable = false, length = 30)
     private String id;
 
     @Column(name = "name", nullable = false, length = 50)

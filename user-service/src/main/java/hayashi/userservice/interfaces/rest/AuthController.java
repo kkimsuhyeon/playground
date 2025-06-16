@@ -29,21 +29,18 @@ public class AuthController {
     @Operation(summary = "토큰 생성", description = "토큰 생성 API")
     @PostMapping("/token/{key}")
     public ResponseEntity<String> createToken(@Parameter(description = "고유키") @PathVariable(name = "key") @NotBlank String key) {
-        System.out.println(key);
         return new ResponseEntity<>(authService.createToken(key), HttpStatus.OK);
     }
 
     @Operation(summary = "토큰 조회", description = "토큰 조회 API")
     @GetMapping("/token/{key}")
     public ResponseEntity<String> getToken(@Parameter(description = "고유키") @PathVariable(name = "key") @NotBlank String key) {
-        System.out.println(key);
         return new ResponseEntity<>(authService.getToken(key), HttpStatus.OK);
     }
 
     @Operation(summary = "토큰 삭제", description = "토큰 삭제 API")
     @DeleteMapping("/token/{key}")
     public ResponseEntity<Void> deleteToken(@Parameter(description = "고유키") @PathVariable(name = "key") @NotBlank String key) {
-        authService.deleteToken(key);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

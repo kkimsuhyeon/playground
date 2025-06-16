@@ -4,6 +4,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 public abstract class BaseRedisTemplate {
@@ -34,22 +35,9 @@ public abstract class BaseRedisTemplate {
      **/
     protected void setSerializer(RedisTemplate<String, Object> template) {
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new StringRedisSerializer());
-        template.setDefaultSerializer(new StringRedisSerializer());
-    }
-
-    /**
-     * Redis 작업중 등록, 수정, 삭제에 대해서 처리 및 예외처리를 수행합니다.
-     */
-    public int executeOperation(Runnable operation) {
-        try {
-            operation.run();
-            return 1;
-        } catch (Exception e) {
-            System.out.println("Redis 작업 오류 발생 :: " + e.getMessage());
-            return 0;
-        }
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setDefaultSerializer(new GenericJackson2JsonRedisSerializer());
     }
 }

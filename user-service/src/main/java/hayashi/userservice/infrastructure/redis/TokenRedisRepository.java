@@ -17,7 +17,6 @@ public class TokenRedisRepository {
     private long expiration;
 
     private final TokenRedisTemplateProvider redisTemplateProvider;
-    private final ObjectMapper objectMapper;
 
     public void saveToken(String key, String token) {
         getTemplate().opsForValue().set(key, token, expiration, TimeUnit.MILLISECONDS);
