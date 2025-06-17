@@ -1,4 +1,4 @@
-package hayashi.userservice.infrastructure.persistence;
+package hayashi.userservice.adapter.out.persistence;
 
 import hayashi.userservice.domain.model.UserEntity;
 import hayashi.userservice.domain.repository.UserRepository;

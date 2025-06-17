@@ -1,7 +1,7 @@
-package hayashi.userservice.common.generator;
+package hayashi.userservice.shared.generator;
 
 import com.github.f4b6a3.tsid.TsidCreator;
-import hayashi.userservice.common.annotation.TsId;
+import hayashi.userservice.shared.annotation.TsId;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;

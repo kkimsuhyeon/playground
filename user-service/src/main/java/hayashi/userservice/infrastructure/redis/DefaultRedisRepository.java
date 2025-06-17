@@ -2,7 +2,7 @@ package hayashi.userservice.infrastructure.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hayashi.userservice.common.redis.DefaultRedisTemplateProvider;
+import hayashi.userservice.config.redis.DefaultRedisTemplateProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.connection.RedisConnection;

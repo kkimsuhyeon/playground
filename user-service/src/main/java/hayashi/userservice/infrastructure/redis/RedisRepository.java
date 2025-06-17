@@ -1,8 +1,7 @@
 package hayashi.userservice.infrastructure.redis;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import hayashi.userservice.common.redis.RedisDatabaseType;
-import hayashi.userservice.common.redis.RedisTemplateFactory;
+import hayashi.userservice.config.redis.RedisDatabaseType;
+import hayashi.userservice.config.redis.RedisTemplateFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

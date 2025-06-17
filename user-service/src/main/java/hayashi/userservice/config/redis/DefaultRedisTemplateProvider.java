@@ -1,17 +1,17 @@
-package hayashi.userservice.common.redis;
+package hayashi.userservice.config.redis;
 
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TokenRedisTemplateProvider extends BaseRedisTemplate implements TypedRedisTemplateProvider {
+public class DefaultRedisTemplateProvider extends BaseRedisTemplate implements TypedRedisTemplateProvider {
 
-    private static final RedisDatabaseType redisDatabaseType = RedisDatabaseType.TOKEN;
+    private final RedisDatabaseType redisDatabaseType = RedisDatabaseType.DEFAULT;
 
     private final RedisTemplate<String, Object> template;
 
-    public TokenRedisTemplateProvider(RedisProperties redisProperties) {
+    public DefaultRedisTemplateProvider(RedisProperties redisProperties) {
         super(redisProperties);
         this.template = new RedisTemplate<>();
 
@@ -23,7 +23,7 @@ public class TokenRedisTemplateProvider extends BaseRedisTemplate implements Typ
 
     @Override
     public RedisDatabaseType getType() {
-        return redisDatabaseType;
+        return this.redisDatabaseType;
     }
 
     @Override

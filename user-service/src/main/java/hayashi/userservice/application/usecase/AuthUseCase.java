@@ -1,4 +1,4 @@
-package hayashi.userservice.application.service;
+package hayashi.userservice.application.usecase;
 
 
 import hayashi.userservice.infrastructure.redis.TokenRedisRepository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthUseCase {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenRedisRepository tokenRedisRepository;

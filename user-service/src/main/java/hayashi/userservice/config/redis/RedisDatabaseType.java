@@ -1,4 +1,4 @@
-package hayashi.userservice.common.redis;
+package hayashi.userservice.config.redis;
 
 
 import lombok.Getter;

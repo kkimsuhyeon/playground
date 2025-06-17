@@ -1,6 +1,6 @@
-package hayashi.userservice.interfaces.rest;
+package hayashi.userservice.adapter.in.web;
 
-import hayashi.userservice.application.service.AuthService;
+import hayashi.userservice.application.usecase.AuthUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthUseCase authService;
 
     @Operation(summary = "토큰 생성", description = "토큰 생성 API")
     @PostMapping("/token/{key}")
