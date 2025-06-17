@@ -1,6 +1,6 @@
 package hayashi.userservice.domain.model;
 
-import hayashi.userservice.common.annotation.TsId;
+import hayashi.userservice.shared.annotation.TsId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

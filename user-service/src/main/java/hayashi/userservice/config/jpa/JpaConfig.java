@@ -1,4 +1,4 @@
-package hayashi.userservice.common.config;
+package hayashi.userservice.config.jpa;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
