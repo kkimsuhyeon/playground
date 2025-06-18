@@ -5,18 +5,24 @@ import hayashi.userservice.config.redis.RedisTemplateFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.concurrent.TimeUnit;
+
 @Repository
 @RequiredArgsConstructor
-public abstract class RedisRepository {
+public class RedisRepository {
 
     private final RedisTemplateFactory redisTemplateFactory;
 
     public void setValueForKey(RedisDatabaseType type, String key, String value) {
-        redisTemplateFactory.getValueOps(type).set(key, value);
+        redisTemplateFactory
+                .getValueOps(type)
+                .set(key, value);
     }
 
     public void setValueForKey(RedisDatabaseType type, String key, String value, long timeout) {
-        redisTemplateFactory.getValueOps(type).set(key, value, timeout);
+        redisTemplateFactory
+                .getValueOps(type)
+                .set(key, value, timeout, TimeUnit.MILLISECONDS);
     }
 
 }
