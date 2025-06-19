@@ -1,5 +1,6 @@
-package hayashi.userservice.infrastructure.security;
+package hayashi.userservice.adapter.out.token;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -23,15 +24,32 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken() {
+    public JwtTokenInfo createToken(JwtTokenPayload payload) {
         Date now = new Date();
         Date expiredDate = new Date(System.currentTimeMillis() + Long.parseLong(expiration));
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .signWith(secretKey)
+                .subject(payload.getId())
+                .claims(payload.toMap())
                 .issuedAt(now)
                 .expiration(expiredDate)
                 .compact();
+
+        return JwtTokenInfo.of(token, expiredDate);
+    }
+
+    public JwtTokenPayload getPayload(String token) {
+        Claims claims = parseToken(token);
+        return JwtTokenPayload.from(claims);
+    }
+
+    private Claims parseToken(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
 

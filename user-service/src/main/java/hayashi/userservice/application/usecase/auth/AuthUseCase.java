@@ -1,8 +1,8 @@
-package hayashi.userservice.application.usecase;
+package hayashi.userservice.application.usecase.auth;
 
 
-import hayashi.userservice.infrastructure.redis.TokenRedisRepository;
-import hayashi.userservice.infrastructure.security.JwtTokenProvider;
+import hayashi.userservice.adapter.out.redis.TokenRedisRepository;
+import hayashi.userservice.adapter.out.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface UserRepository {
 
     Optional<UserEntity> findById(String id);
+
+    UserEntity save(UserEntity user);
 }
