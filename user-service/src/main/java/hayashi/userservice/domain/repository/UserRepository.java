@@ -10,6 +10,8 @@ public interface UserRepository {
 
     Optional<UserEntity> findById(String id);
 
+    Optional<UserEntity> findByEmail(String email);
+
     UserEntity save(UserEntity user);
 
     Page<UserEntity> findAll(Pageable pageable);

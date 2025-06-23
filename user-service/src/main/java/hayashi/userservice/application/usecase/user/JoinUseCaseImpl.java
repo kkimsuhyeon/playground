@@ -5,10 +5,12 @@ import hayashi.userservice.application.mapper.UserMapper;
 import hayashi.userservice.domain.model.UserEntity;
 import hayashi.userservice.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 @RequiredArgsConstructor
+@Transactional
 public class JoinUseCaseImpl implements JoinUseCase {
 
     private final UserMapper userMapper;

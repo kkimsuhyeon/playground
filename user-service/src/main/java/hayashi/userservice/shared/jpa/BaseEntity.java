@@ -1,4 +1,4 @@
-package hayashi.userservice.shared.jsp;
+package hayashi.userservice.shared.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;

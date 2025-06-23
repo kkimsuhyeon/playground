@@ -16,6 +16,8 @@ public interface UserService {
 
     UserEntity getById(String id);
 
+    UserEntity getByEmail(String email);
+
     Page<UserEntity> searchUsers(String name, String email, Pageable pageable);
 
 }

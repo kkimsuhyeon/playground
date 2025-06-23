@@ -27,6 +27,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("empty"));
+    }
+
+    @Override
     public Page<UserEntity> searchUsers(String name, String email, Pageable pageable) {
 
         if (StringUtils.hasText(name) && StringUtils.hasText(email)) {
