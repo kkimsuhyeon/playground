@@ -1,4 +1,4 @@
-package hayashi.userservice.domain.query;
+package hayashi.userservice.application.query;
 
 import lombok.Data;
 import lombok.Getter;

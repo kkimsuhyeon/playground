@@ -2,6 +2,7 @@ package hayashi.userservice.application.usecase.auth;
 
 
 import hayashi.userservice.adapter.out.redis.TokenRedisRepository;
+import hayashi.userservice.adapter.out.token.JwtTokenInfo;
 import hayashi.userservice.adapter.out.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,10 @@ public class AuthUseCase {
     private final TokenRedisRepository tokenRedisRepository;
 
     public String createToken(String key) {
-        String token = jwtTokenProvider.createToken();
-        tokenRedisRepository.saveToken(key, token);
+        JwtTokenInfo token = jwtTokenProvider.createToken(null);
+        tokenRedisRepository.saveToken(key, token.getToken());
 
-        return token;
+        return token.getToken();
     }
 
     public String getToken(String key) {

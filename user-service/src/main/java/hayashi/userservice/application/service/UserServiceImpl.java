@@ -1,26 +1,48 @@
 package hayashi.userservice.application.service;
 
-import hayashi.userservice.domain.command.JoinUserCommand;
 import hayashi.userservice.domain.model.UserEntity;
-import hayashi.userservice.domain.query.FindUserQuery;
+import hayashi.userservice.domain.repository.UserRepository;
 import hayashi.userservice.domain.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.List;
-
+@Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final UserRepository userRepository;
+
     @Override
-    public UserEntity create(JoinUserCommand command) {
-        return null;
+    public UserEntity create(UserEntity entity) {
+        return userRepository.save(entity);
     }
 
     @Override
     public UserEntity getById(String id) {
-        return null;
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("empty"));
     }
 
     @Override
-    public List<UserEntity> searchUsers(FindUserQuery query) {
-        return List.of();
+    public Page<UserEntity> searchUsers(String name, String email, Pageable pageable) {
+
+        if (StringUtils.hasText(name) && StringUtils.hasText(email)) {
+            return userRepository.findByNameContainingOrEmailContaining(name, email, pageable);
+        }
+
+        if (StringUtils.hasText(name)) {
+            return userRepository.findByNameContaining(name, pageable);
+        }
+
+        if (StringUtils.hasText(email)) {
+            return userRepository.findByEmailContaining(email, pageable);
+        }
+
+        return userRepository.findAll(pageable);
+
     }
+
 }

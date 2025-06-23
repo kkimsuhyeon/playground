@@ -1,4 +1,4 @@
-package hayashi.userservice.domain.command;
+package hayashi.userservice.application.command;
 
 import hayashi.userservice.domain.model.UserEntity;
 import lombok.Getter;

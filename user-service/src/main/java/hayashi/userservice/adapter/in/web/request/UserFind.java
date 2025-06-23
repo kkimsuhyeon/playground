@@ -1,6 +1,6 @@
 package hayashi.userservice.adapter.in.web.request;
 
-import hayashi.userservice.domain.query.FindUserQuery;
+import hayashi.userservice.application.query.FindUserQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
