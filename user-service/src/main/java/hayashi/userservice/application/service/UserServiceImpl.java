@@ -3,6 +3,7 @@ package hayashi.userservice.application.service;
 import hayashi.userservice.domain.model.UserEntity;
 import hayashi.userservice.domain.repository.UserRepository;
 import hayashi.userservice.domain.service.UserService;
+import hayashi.userservice.shared.exception.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +24,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity getById(String id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("empty"));
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
     public UserEntity getByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("empty"));
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
