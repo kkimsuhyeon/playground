@@ -41,6 +41,15 @@ spring:
       port: 6379
       password: test123
 
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        use_sql_comments: true
+        format_sql: true
+        show_sql: true
+
 springdoc:
   api-docs:
     enabled: true

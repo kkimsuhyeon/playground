@@ -13,7 +13,7 @@ public class LoginRequest {
 
     @Schema(description = "이메일")
     @NotBlank
-    @Email
+    @Email(message = "이메일 형식을 확인해주세요.")
     private String email;
 
     @Schema(description = "패스워드")

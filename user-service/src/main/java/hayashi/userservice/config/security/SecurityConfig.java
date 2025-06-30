@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    public static final List<String> ALLOWED_URI = List.of(
+    public static final List<String> ALLOWED_OPTION_URI = List.of(
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/health-check",
@@ -28,6 +28,12 @@ public class SecurityConfig {
             "/actuator/**"
     );
 
+    public static final List<String> ALLOWED_BUSINESS_URI = List.of(
+            "/api/v1/users/token/**",
+            "/api/v1/users/join",
+            "/api/v1/users/login"
+    );
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -35,8 +41,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(ALLOWED_URI.toArray(String[]::new)).permitAll()
-                        .requestMatchers("/api/v1/users/token/**").permitAll()
+                        .requestMatchers(ALLOWED_OPTION_URI.toArray(String[]::new)).permitAll()
+                        .requestMatchers(ALLOWED_BUSINESS_URI.toArray(String[]::new)).permitAll()
                         .anyRequest().authenticated())
                 .build();
     }

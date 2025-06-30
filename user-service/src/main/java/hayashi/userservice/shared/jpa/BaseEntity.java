@@ -35,8 +35,6 @@ public class BaseEntity {
     @CreatedDate
     @Comment("등록일시")
     @Column(name = "created_at", nullable = false, updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createdAt;
 
     @LastModifiedBy
@@ -47,7 +45,5 @@ public class BaseEntity {
     @LastModifiedDate
     @Comment("변경일시")
     @Column(name = "updated_at", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime updatedAt;
 }
