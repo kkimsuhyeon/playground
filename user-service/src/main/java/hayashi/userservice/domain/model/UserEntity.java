@@ -1,12 +1,14 @@
 package hayashi.userservice.domain.model;
 
 import hayashi.userservice.shared.annotation.TsId;
+import hayashi.userservice.shared.jpa.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "user")
+@Table(name = "users")
+@Builder
 public class UserEntity extends BaseEntity {
 
     @Id
@@ -25,7 +28,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
 
     @Column(name = "password", nullable = false, length = 100)

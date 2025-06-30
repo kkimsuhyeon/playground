@@ -1,4 +1,4 @@
-package hayashi.userservice.domain.model;
+package hayashi.userservice.shared.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
