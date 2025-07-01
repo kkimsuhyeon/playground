@@ -1,4 +1,4 @@
-package hayashi.userservice.adapter.out.token;
+package hayashi.userservice.config.security.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,6 +37,16 @@ public class JwtTokenProvider {
                 .compact();
 
         return JwtTokenInfo.of(token, expiredDate);
+    }
+
+    public boolean tokenValidation(String token) {
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+            return true;
+        } catch (Exception e) {
+            log.error("Token validation failed", e);
+            throw new IllegalArgumentException("Invalid token");
+        }
     }
 
     public JwtTokenPayload getPayload(String token) {

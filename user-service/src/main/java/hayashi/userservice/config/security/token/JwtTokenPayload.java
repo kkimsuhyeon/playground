@@ -1,4 +1,4 @@
-package hayashi.userservice.adapter.out.token;
+package hayashi.userservice.config.security.token;
 
 import hayashi.userservice.domain.model.UserEntity;
 import io.jsonwebtoken.Claims;

@@ -6,6 +6,7 @@ import hayashi.userservice.adapter.in.web.request.UserFind;
 import hayashi.userservice.adapter.in.web.response.UserResponse;
 import hayashi.userservice.application.usecase.user.JoinUseCase;
 import hayashi.userservice.application.usecase.user.LoginUseCase;
+import hayashi.userservice.config.security.AuthUser;
 import hayashi.userservice.domain.model.UserEntity;
 import hayashi.userservice.shared.dto.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +50,8 @@ public class UserController {
 
     @Operation(summary = "유저 조회", description = "유저 조회 API")
     @GetMapping
-    public ResponseEntity<Void> getUsers(@Valid UserFind find) {
+    public ResponseEntity<Void> getUsers(@Valid UserFind find, @AuthenticationPrincipal AuthUser authUser) {
+        System.out.println(authUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

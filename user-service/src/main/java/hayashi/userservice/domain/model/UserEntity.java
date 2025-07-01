@@ -1,10 +1,8 @@
 package hayashi.userservice.domain.model;
 
 import hayashi.userservice.shared.annotation.TsId;
-import hayashi.userservice.shared.converter.EncryptConverter;
 import hayashi.userservice.shared.jpa.BaseEntity;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -21,8 +19,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "users")
 @SuperBuilder
+@Table(name = "users")
 public class UserEntity extends BaseEntity {
 
     @Id
@@ -41,7 +39,6 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "password", nullable = false, length = 100)
     @Comment("패스워드")
-    @Convert(converter = EncryptConverter.class)
     private String password;
 
     @Column(name = "last_login_at")
