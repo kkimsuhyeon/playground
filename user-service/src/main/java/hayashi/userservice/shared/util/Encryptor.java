@@ -1,17 +1,22 @@
 package hayashi.userservice.shared.util;
 
 import hayashi.userservice.shared.exception.exceptions.ServerErrorException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+@Component
 public class Encryptor {
 
-    private static final String KEY = "123456789hayashi";
     private static final String ALGORITHM = "AES";
 
-    public static String encrypt(String value) {
+    @Value("${hayashi.encrypt.key}")
+    private String KEY;
+
+    public String encrypt(String value) {
         try {
             SecretKeySpec keySpec = new SecretKeySpec(KEY.getBytes(), ALGORITHM);
             Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -22,7 +27,7 @@ public class Encryptor {
         }
     }
 
-    public static String decrypt(String value) {
+    public String decrypt(String value) {
         try {
             SecretKeySpec keySpec = new SecretKeySpec(KEY.getBytes(), ALGORITHM);
             Cipher cipher = Cipher.getInstance(ALGORITHM);

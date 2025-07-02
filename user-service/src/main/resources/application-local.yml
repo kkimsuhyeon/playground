@@ -71,3 +71,7 @@ management:
   endpoint:
     health:
       show-details: always
+
+hayashi:
+  encrypt:
+    key: "123456789hayashi"
