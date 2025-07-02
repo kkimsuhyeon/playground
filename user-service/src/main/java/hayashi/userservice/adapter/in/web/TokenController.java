@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +30,7 @@ public class TokenController {
     public ResponseEntity<BaseResponse<String>> getToken(@Parameter(description = "고유키") @PathVariable(name = "key") @NotBlank String key) {
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .ok()
                 .body(BaseResponse.success(tokenUseCase.getToken(key)));
     }
 
@@ -39,8 +38,10 @@ public class TokenController {
     @DeleteMapping("/{key}")
     public ResponseEntity<BaseResponse<Void>> deleteToken(@Parameter(description = "고유키") @PathVariable(name = "key") @NotBlank String key) {
         tokenUseCase.deleteToken(key);
-        
-        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.success());
+
+        return ResponseEntity
+                .ok()
+                .body(BaseResponse.success());
     }
 
 }

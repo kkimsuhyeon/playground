@@ -16,7 +16,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +43,7 @@ public class UserController {
         UserEntity user = joinUseCase.join(request.toCommand());
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .ok()
                 .body(BaseResponse.success(UserResponse.from(user)));
     }
 
@@ -54,7 +53,7 @@ public class UserController {
         String token = loginUseCase.login(request.getEmail(), request.getPassword());
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .ok()
                 .body(BaseResponse.success(token));
     }
 
@@ -69,7 +68,7 @@ public class UserController {
                 .map(UserResponse::from);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .ok()
                 .body(BaseResponse.success(response));
     }
 
@@ -81,7 +80,7 @@ public class UserController {
         UserEntity user = userQueryUseCase.getUser(userId);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .ok()
                 .body(BaseResponse.success(UserResponse.from(user)));
     }
 }

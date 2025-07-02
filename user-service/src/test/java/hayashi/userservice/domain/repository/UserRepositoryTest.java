@@ -9,11 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Import({JpaConfig.class})
 @DataJpaTest
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 class UserRepositoryTest {
 
     @Autowired
