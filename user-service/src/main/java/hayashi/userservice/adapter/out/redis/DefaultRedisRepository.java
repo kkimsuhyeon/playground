@@ -1,4 +1,4 @@
-package hayashi.userservice.infrastructure.redis;
+package hayashi.userservice.adapter.out.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

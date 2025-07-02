@@ -43,7 +43,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         use_sql_comments: true
@@ -71,3 +71,7 @@ management:
   endpoint:
     health:
       show-details: always
+
+hayashi:
+  encrypt:
+    key: "123456789hayashi"

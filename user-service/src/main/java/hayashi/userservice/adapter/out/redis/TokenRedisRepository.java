@@ -1,4 +1,4 @@
-package hayashi.userservice.infrastructure.redis;
+package hayashi.userservice.adapter.out.redis;
 
 import hayashi.userservice.config.redis.TokenRedisTemplateProvider;
 import lombok.RequiredArgsConstructor;
