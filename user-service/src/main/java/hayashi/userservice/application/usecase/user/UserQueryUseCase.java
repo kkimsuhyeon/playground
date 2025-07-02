@@ -1,13 +1,12 @@
 package hayashi.userservice.application.usecase.user;
 
-import hayashi.userservice.application.query.FindUserQuery;
 import hayashi.userservice.domain.model.UserEntity;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserQueryUseCase {
 
-    List<UserEntity> getUsers(FindUserQuery query);
+    Page<UserEntity> getUsers(String name, String email, Pageable pageable);
 
     UserEntity getUser(String userId);
 }

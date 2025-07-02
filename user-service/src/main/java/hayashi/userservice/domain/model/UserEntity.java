@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 public class UserEntity extends BaseEntity {
 
     @Id
-    @TsId(prefix = "USER_")
+    @TsId(prefix = "USER")
     @Column(name = "user_id", nullable = false, updatable = false, length = 30)
     @Comment("아이디")
     private String id;

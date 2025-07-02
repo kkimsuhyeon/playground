@@ -26,7 +26,7 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.error("SecurityAuthenticationEntryPoint pass: {} / {}", request, response);
+        log.error("SecurityAuthenticationEntryPoint error");
 
         BaseResponse<Object> fail = BaseResponse.fail(ERROR_CODE);
 

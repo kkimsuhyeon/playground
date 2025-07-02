@@ -1,6 +1,6 @@
 package hayashi.userservice.adapter.in.web;
 
-import hayashi.userservice.application.usecase.auth.AuthUseCase;
+import hayashi.userservice.application.usecase.token.TokenUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,18 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users/token")
 public class TokenController {
 
-    private final AuthUseCase authUseCase;
-
-    @Operation(summary = "토큰 생성", description = "토큰 생성 API")
-    @PostMapping("/{key}")
-    public ResponseEntity<String> createToken(@Parameter(description = "고유키") @PathVariable(name = "key") @NotBlank String key) {
-        return new ResponseEntity<>(authUseCase.createToken(key), HttpStatus.OK);
-    }
+    private final TokenUseCase tokenUseCase;
 
     @Operation(summary = "토큰 조회", description = "토큰 조회 API")
     @GetMapping("/{key}")
     public ResponseEntity<String> getToken(@Parameter(description = "고유키") @PathVariable(name = "key") @NotBlank String key) {
-        return new ResponseEntity<>(authUseCase.getToken(key), HttpStatus.OK);
+        return new ResponseEntity<>(tokenUseCase.getToken(key), HttpStatus.OK);
     }
 
     @Operation(summary = "토큰 삭제", description = "토큰 삭제 API")
