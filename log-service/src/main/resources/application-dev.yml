@@ -31,4 +31,4 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://root:root@api-log-db:27017/api_log_db?authSource=admin
+      uri: mongodb://${DB_ROOT_NAME}:${DB_ROOT_PASSWORD}@${DB_HOST:localhost}:27017/api_log_db?authSource=admin

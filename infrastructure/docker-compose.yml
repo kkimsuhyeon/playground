@@ -20,7 +20,7 @@ services:
     networks:
       - microservice-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8500/v1/status/leader" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -68,15 +68,15 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_API_LOG_USER: ${MONGO_INITDB_API_LOG_USER} 
-      MONGO_INITDB_API_LOG_PASSWORD: ${MONGO_INITDB_API_LOG_PASSWORD} 
+      MONGO_INITDB_API_LOG_USER: ${MONGO_INITDB_API_LOG_USER}
+      MONGO_INITDB_API_LOG_PASSWORD: ${MONGO_INITDB_API_LOG_PASSWORD}
     volumes:
       - api-log-db-data:/data/db
       - ./mongodb:/docker-entrypoint-initdb.d:ro
     networks:
       - microservice-network
     healthcheck:
-      test: ["CMD", "mongosh", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--quiet", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--quiet", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -120,6 +120,7 @@ services:
       - CONSUL_PORT=8500
       - DB_USERNAME=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
+      - REDIS_HOST=redis
       - RESIT_PASSWORD=${REDIS_PASSWORD}
     depends_on:
       api-gateway:

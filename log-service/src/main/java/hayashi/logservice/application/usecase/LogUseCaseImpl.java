@@ -19,9 +19,8 @@ public class LogUseCaseImpl implements LogUseCase {
     @Override
     public LogDocument save(SaveLogCommand command) {
         LogDocument document = logFactory.toDocument(command);
-        logRepository.save(document);
 
-        return document;
+        return logRepository.save(document);
     }
 
     @Override
@@ -30,7 +29,6 @@ public class LogUseCaseImpl implements LogUseCase {
                 .map(logFactory::toDocument)
                 .toList();
 
-        logRepository.saveAll(documents);
-        return documents;
+        return logRepository.saveAll(documents);
     }
 }

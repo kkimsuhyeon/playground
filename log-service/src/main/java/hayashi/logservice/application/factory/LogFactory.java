@@ -16,7 +16,7 @@ public class LogFactory {
                 .userId(command.getUserId())
                 .request(command.getRequest())
                 .response(command.getResponse())
-                .requestAt(LocalDateTime.now())
+                .requestAt(command.getRequestAt())
                 .build();
     }
 }
