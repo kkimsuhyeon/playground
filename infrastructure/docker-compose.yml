@@ -68,8 +68,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_API_LOG_USER: ${MONGO_INITDB_API_LOG_USER}
-      MONGO_INITDB_API_LOG_PASSWORD: ${MONGO_INITDB_API_LOG_PASSWORD}
+      MONGO_INITDB_LOG_USER: ${MONGO_INITDB_LOG_USER}
+      MONGO_INITDB_LOG_PASSWORD: ${MONGO_INITDB_LOG_PASSWORD}
     volumes:
       - log-db-data:/data/db
       - ./mongodb:/docker-entrypoint-initdb.d:ro
@@ -122,8 +122,10 @@ services:
       - DB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - DB_HOST=log-db
     depends_on:
-      api-gateway:
-        condition: service_started
+      consul-server:
+        condition: service_healthy
+      log-db:
+        condition: service_healthy
     networks:
       - microservice-network
 
@@ -145,8 +147,14 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - ENCRYPT_KEY=${ENCRYPT_KEY}
     depends_on:
-      api-gateway:
+      consul-server:
+        condition: service_healthy
+      user-db:
         condition: service_started
+      redis:
+        condition: service_healthy
+      log-db:
+        condition: service_healthy
     networks:
       - microservice-network
 
