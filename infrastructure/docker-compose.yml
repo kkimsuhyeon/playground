@@ -60,7 +60,7 @@ services:
       - microservice-network
 
   api-log-db:
-    image: mongo:latest
+    image: mongo:6.0
     container_name: api-log-db
     restart: always
     ports:
@@ -74,7 +74,7 @@ services:
     networks:
       - microservice-network
     healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      test: ["CMD", "mongosh", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--quiet", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -118,6 +118,7 @@ services:
       - CONSUL_PORT=8500
       - DB_USERNAME=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
+      - RESIT_PASSWORD=${REDIS_PASSWORD}
     depends_on:
       api-gateway:
         condition: service_started
