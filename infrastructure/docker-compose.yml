@@ -103,6 +103,12 @@ services:
         condition: service_healthy
     networks:
       - microservice-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
   log-service:
     build:
@@ -126,6 +132,12 @@ services:
         condition: service_healthy
     networks:
       - microservice-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8089/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
   user-service:
     build:
@@ -155,6 +167,12 @@ services:
         condition: service_healthy
     networks:
       - microservice-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
 volumes:
   consul-data:
