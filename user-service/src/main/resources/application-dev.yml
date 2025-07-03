@@ -37,9 +37,9 @@ spring:
 
   data:
     redis:
-      host: redis
+      host: ${REDIS_HOST}
       port: 6379
-      password: test123
+      password: ${REDIS_PASSWORD}
 
   jpa:
     hibernate:
@@ -71,3 +71,7 @@ management:
   endpoint:
     health:
       show-details: always
+
+hayashi:
+  encrypt:
+    key: ${ENCRYPT_KEY}

@@ -20,7 +20,7 @@ services:
     networks:
       - microservice-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8500/v1/status/leader" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -59,24 +59,24 @@ services:
     networks:
       - microservice-network
 
-  api-log-db:
+  log-db:
     image: mongo:6.0
-    container_name: api-log-db
+    container_name: log-db
     restart: always
     ports:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_API_LOG_USER: ${MONGO_INITDB_API_LOG_USER} 
-      MONGO_INITDB_API_LOG_PASSWORD: ${MONGO_INITDB_API_LOG_PASSWORD} 
+      MONGO_INITDB_LOG_USER: ${MONGO_INITDB_LOG_USER}
+      MONGO_INITDB_LOG_PASSWORD: ${MONGO_INITDB_LOG_PASSWORD}
     volumes:
-      - api-log-db-data:/data/db
+      - log-db-data:/data/db
       - ./mongodb:/docker-entrypoint-initdb.d:ro
     networks:
       - microservice-network
     healthcheck:
-      test: ["CMD", "mongosh", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--quiet", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--quiet", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -97,11 +97,32 @@ services:
     depends_on:
       consul-server:
         condition: service_healthy
-      user-db:
-        condition: service_started
-      redis:
+      log-service:
         condition: service_healthy
-      api-log-db:
+      user-service:
+        condition: service_healthy
+    networks:
+      - microservice-network
+
+  log-service:
+    build:
+      context: ../log-service
+      dockerfile: Dockerfile
+    container_name: log-service
+    restart: always
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - CONSUL_HOST=consul-server
+      - CONSUL_PORT=8500
+      - DB_ROOT_NAME=${MONGO_INITDB_ROOT_USERNAME}
+      - DB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - DB_HOST=log-db
+    depends_on:
+      consul-server:
+        condition: service_healthy
+      log-db:
         condition: service_healthy
     networks:
       - microservice-network
@@ -120,10 +141,18 @@ services:
       - CONSUL_PORT=8500
       - DB_USERNAME=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
-      - RESIT_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
     depends_on:
-      api-gateway:
+      consul-server:
+        condition: service_healthy
+      user-db:
         condition: service_started
+      redis:
+        condition: service_healthy
+      log-service:
+        condition: service_healthy
     networks:
       - microservice-network
 
@@ -132,7 +161,7 @@ volumes:
   consul-config:
   user-db-data:
   redis-data:
-  api-log-db-data:
+  log-db-data:
 
 networks:
   microservice-network:
