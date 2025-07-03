@@ -97,11 +97,9 @@ services:
     depends_on:
       consul-server:
         condition: service_healthy
-      user-db:
-        condition: service_started
-      redis:
+      log-service:
         condition: service_healthy
-      log-db:
+      user-service:
         condition: service_healthy
     networks:
       - microservice-network
@@ -153,7 +151,7 @@ services:
         condition: service_started
       redis:
         condition: service_healthy
-      log-db:
+      log-service:
         condition: service_healthy
     networks:
       - microservice-network

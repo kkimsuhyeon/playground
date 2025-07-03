@@ -25,7 +25,7 @@ public class LogController {
     private final LogUseCase logUseCase;
 
     @PostMapping
-    public ResponseEntity<LogResponse> save(@RequestBody SaveRequest request) {
+    public ResponseEntity<LogResponse> save(@Valid @RequestBody SaveRequest request) {
         SaveLogCommand command = request.toCommand();
         LogDocument document = logUseCase.save(command);
 
