@@ -1,0 +1,34 @@
+server:
+  port: 8089
+
+host: "localhost"
+host-url: "http://localhost:8089"
+
+spring:
+  application:
+    name: log-service
+
+  config:
+    import: "consul:"
+    activate:
+      on-profile: dev
+
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        instance-id: ${spring.application.name}:${random.value}
+        health-check-path: /actuator/health
+        health-check-interval: 15s
+        prefer-ip-address: true
+      config:
+        enabled: true
+        format: key_value
+        prefixes: config
+        default-context: application
+        fail-fast: true
+
+  data:
+    mongodb:
+      uri: mongodb://root:root@api-log-db:27017/api_log_db?authSource=admin
