@@ -20,21 +20,21 @@ services:
     networks:
       - microservice-network
     healthcheck:
-      test: ["CMD", "consul", "health", "status", "leader"]
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 40s
 
   user-db:
     image: mysql
     container_name: user-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: user_service_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
@@ -48,9 +48,9 @@ services:
     restart: always
     ports:
       - "6379:6379"
-    command: [ "redis-server", "--requirepass", "test123" ]
+    command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
     healthcheck:
-      test: [ "CMD", "redis-cli", "-a", "test123", "ping" ]
+      test: [ "CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -58,6 +58,27 @@ services:
       - redis-data:/data
     networks:
       - microservice-network
+
+  api-log-db:
+    image: mongo:6.0
+    container_name: api-log-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: api_log_db
+    volumes:
+      - api-log-db-data:/data/db
+    networks:
+      - microservice-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--username", "${MONGO_INITDB_ROOT_USERNAME}", "--password", "${MONGO_INITDB_ROOT_PASSWORD}", "--authenticationDatabase", "admin", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
   api-gateway:
     build:
@@ -78,6 +99,8 @@ services:
         condition: service_started
       redis:
         condition: service_healthy
+      api-log-db:
+        condition: service_healthy
     networks:
       - microservice-network
 
@@ -93,8 +116,9 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - CONSUL_HOST=consul-server
       - CONSUL_PORT=8500
-      - DB_USERNAME=user
-      - DB_PASSWORD=user
+      - DB_USERNAME=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - RESIT_PASSWORD=${REDIS_PASSWORD}
     depends_on:
       api-gateway:
         condition: service_started
@@ -106,7 +130,7 @@ volumes:
   consul-config:
   user-db-data:
   redis-data:
-
+  api-log-db-data:
 
 networks:
   microservice-network:
