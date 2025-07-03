@@ -59,9 +59,9 @@ services:
     networks:
       - microservice-network
 
-  api-log-db:
+  log-db:
     image: mongo:6.0
-    container_name: api-log-db
+    container_name: log-db
     restart: always
     ports:
       - "27017:27017"
@@ -71,7 +71,7 @@ services:
       MONGO_INITDB_API_LOG_USER: ${MONGO_INITDB_API_LOG_USER}
       MONGO_INITDB_API_LOG_PASSWORD: ${MONGO_INITDB_API_LOG_PASSWORD}
     volumes:
-      - api-log-db-data:/data/db
+      - log-db-data:/data/db
       - ./mongodb:/docker-entrypoint-initdb.d:ro
     networks:
       - microservice-network
@@ -101,8 +101,29 @@ services:
         condition: service_started
       redis:
         condition: service_healthy
-      api-log-db:
+      log-db:
         condition: service_healthy
+    networks:
+      - microservice-network
+
+  log-service:
+    build:
+      context: ../log-service
+      dockerfile: Dockerfile
+    container_name: log-service
+    restart: always
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - CONSUL_HOST=consul-server
+      - CONSUL_PORT=8500
+      - DB_ROOT_NAME=${MONGO_INITDB_ROOT_USERNAME}
+      - DB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - DB_HOST=log-db
+    depends_on:
+      api-gateway:
+        condition: service_started
     networks:
       - microservice-network
 
@@ -121,7 +142,8 @@ services:
       - DB_USERNAME=${MYSQL_USER}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - REDIS_HOST=redis
-      - RESIT_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - ENCRYPT_KEY=${ENCRYPT_KEY}
     depends_on:
       api-gateway:
         condition: service_started
@@ -133,7 +155,7 @@ volumes:
   consul-config:
   user-db-data:
   redis-data:
-  api-log-db-data:
+  log-db-data:
 
 networks:
   microservice-network:

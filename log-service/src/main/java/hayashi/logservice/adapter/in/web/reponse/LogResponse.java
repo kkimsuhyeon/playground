@@ -18,6 +18,6 @@ public class LogResponse {
     private LocalDateTime requestAt;
 
     public static LogResponse from(LogDocument document) {
-        return new LogResponse(document.getId(), document.getUserId(), document.getRequestAt());
+        return LogResponse.of(document.getId(), document.getUserId(), document.getRequestAt());
     }
 }

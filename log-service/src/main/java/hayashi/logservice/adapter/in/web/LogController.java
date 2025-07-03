@@ -5,6 +5,7 @@ import hayashi.logservice.adapter.in.web.request.SaveRequest;
 import hayashi.logservice.application.command.SaveLogCommand;
 import hayashi.logservice.application.usecase.LogUseCase;
 import hayashi.logservice.domain.model.LogDocument;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +35,7 @@ public class LogController {
     }
 
     @PostMapping("/bulk")
-    public ResponseEntity<List<LogResponse>> saveBulk(@RequestBody List<SaveRequest> requests) {
+    public ResponseEntity<List<LogResponse>> saveBulk(@Valid @RequestBody List<SaveRequest> requests) {
         List<SaveLogCommand> commands = requests.stream()
                 .map(SaveRequest::toCommand)
                 .toList();

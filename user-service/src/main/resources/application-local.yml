@@ -74,4 +74,4 @@ management:
 
 hayashi:
   encrypt:
-    key: "123456789hayashi"
+    key: ${ENCRYPT_KEY}
