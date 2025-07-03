@@ -68,9 +68,11 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: api_log_db
+      MONGO_INITDB_API_LOG_USER: ${MONGO_INITDB_API_LOG_USER} 
+      MONGO_INITDB_API_LOG_PASSWORD: ${MONGO_INITDB_API_LOG_PASSWORD} 
     volumes:
       - api-log-db-data:/data/db
+      - ./mongodb:/docker-entrypoint-initdb.d:ro
     networks:
       - microservice-network
     healthcheck:
