@@ -1,13 +1,8 @@
 package hayashi.logservice.adapter.in.web.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import hayashi.logservice.application.command.SaveLogCommand;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 public class SaveRequest {
@@ -15,15 +10,18 @@ public class SaveRequest {
     @NotBlank
     private String userId;
 
-    private Map<String, Object> request;
+    private String requestUri;
 
-    private Map<String, Object> response;
+    private String requestMethod;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime requestAt;
+    private Object requestData;
+
+    private String requestAt;
+
+    private Object response;
 
     public SaveLogCommand toCommand() {
-        return SaveLogCommand.of(userId, request, response, requestAt);
+        return SaveLogCommand.of(userId, requestUri, requestMethod, requestData, requestAt, response);
     }
 
 }

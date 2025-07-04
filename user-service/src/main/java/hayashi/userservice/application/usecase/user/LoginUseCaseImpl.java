@@ -8,6 +8,7 @@ import hayashi.userservice.domain.model.UserEntity;
 import hayashi.userservice.domain.service.UserService;
 import hayashi.userservice.shared.exception.exceptions.PasswordIncorrectException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoginUseCaseImpl implements LoginUseCase {
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenRedisRepository tokenRedisRepository;
     private final PasswordEncoder passwordEncoder;
@@ -36,6 +38,7 @@ public class LoginUseCaseImpl implements LoginUseCase {
 
         user.updateLastLoginAt();
 
+        applicationEventPublisher.publishEvent(user);
         return token.getToken();
     }
 }

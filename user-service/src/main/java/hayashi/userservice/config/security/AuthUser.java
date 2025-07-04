@@ -2,6 +2,7 @@ package hayashi.userservice.config.security;
 
 import hayashi.userservice.domain.model.UserEntity;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @ToString
+@Getter
 @AllArgsConstructor(staticName = "of")
 public class AuthUser implements UserDetails {
 
