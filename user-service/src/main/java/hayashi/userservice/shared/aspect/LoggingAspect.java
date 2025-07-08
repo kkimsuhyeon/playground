@@ -3,6 +3,7 @@ package hayashi.userservice.shared.aspect;
 import hayashi.userservice.adapter.out.external.dto.RequestSaveLog;
 import hayashi.userservice.shared.dto.BaseResponse;
 import hayashi.userservice.shared.event.ErrorLogEvent;
+import hayashi.userservice.shared.event.SuccessLogEvent;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -27,7 +28,7 @@ public class LoggingAspect {
         BaseResponse<?> response = (BaseResponse<?>) ((ResponseEntity<?>) result).getBody();
 
         RequestSaveLog request = RequestSaveLog.create(attr, joinPoint, response);
-        eventPublisher.publishEvent(new ErrorLogEvent(this, request));
+        eventPublisher.publishEvent(new SuccessLogEvent(this, request));
     }
 
     @AfterThrowing(pointcut = "execution(* hayashi.userservice..*Controller.*(..)) || " +

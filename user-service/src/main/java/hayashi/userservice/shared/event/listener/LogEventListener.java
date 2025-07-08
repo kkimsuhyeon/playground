@@ -26,8 +26,7 @@ public class LogEventListener {
         try {
             logServiceClient.saveLog(event.getData());
         } catch (Exception e) {
-            log.error("[handleSuccessLog]: fail to save log : {}", e.getMessage());
-            e.printStackTrace();
+            log.error("[handleSuccessLog]: fail to save log : ", e);
         }
     }
 
@@ -38,8 +37,7 @@ public class LogEventListener {
         try {
             logServiceClient.saveLog(event.getData());
         } catch (Exception e) {
-            log.error("[handleErrorLog]: fail to save log : {}", e.getMessage());
-            e.printStackTrace();
+            log.error("[handleErrorLog]: fail to save log : ", e);
         }
     }
 

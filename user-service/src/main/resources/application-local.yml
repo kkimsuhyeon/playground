@@ -62,7 +62,6 @@ springdoc:
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace
-    hayashi.userservice.adapter.out.external.client.LogServiceClient: DEBUG
 
 management:
   endpoints:
