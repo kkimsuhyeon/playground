@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-
 @Document(collection = "logs")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,9 +20,14 @@ public class LogDocument {
 
     private String userId;
 
-    private Map<String, Object> request;
+    private String requestUri;
 
-    private Map<String, Object> response;
+    private String requestMethod;
 
-    private LocalDateTime requestAt;
+    private Object requestData;
+
+    private String requestAt;
+
+    private Object response;
+
 }

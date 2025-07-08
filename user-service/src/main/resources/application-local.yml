@@ -22,6 +22,7 @@ spring:
         health-check-path: /actuator/health
         health-check-interval: 15s
         prefer-ip-address: true
+        register-health-check: false
       config:
         enabled: true
         format: key_value
@@ -75,3 +76,6 @@ management:
 hayashi:
   encrypt:
     key: ${ENCRYPT_KEY}
+
+external:
+  log-service.url: http://localhost:8089

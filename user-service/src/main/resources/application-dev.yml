@@ -75,3 +75,6 @@ management:
 hayashi:
   encrypt:
     key: ${ENCRYPT_KEY}
+
+external:
+  log-service.url: http://log-service
