@@ -1,0 +1,24 @@
+package hayashi.apigateway.security;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class UserInfo {
+
+    private String id;
+    private String email;
+    private String name;
+
+    public String toJson(ObjectMapper objectMapper) {
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+}

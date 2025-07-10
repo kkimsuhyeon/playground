@@ -1,6 +1,8 @@
 package hayashi.apigateway.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hayashi.apigateway.security.JwtTokenValidator;
+import hayashi.apigateway.security.UserInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -22,40 +24,54 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
+    private static final String USER_INFO_HEADER = "X-User-Info";
 
     private final ObjectMapper objectMapper;
+    private final JwtTokenValidator jwtTokenValidator;
 
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public AuthenticationFilter(ObjectMapper objectMapper) {
+    public AuthenticationFilter(ObjectMapper objectMapper, JwtTokenValidator jwtTokenValidator) {
         super(Config.class);
         this.objectMapper = objectMapper;
+        this.jwtTokenValidator = jwtTokenValidator;
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-
             ServerHttpRequest request = exchange.getRequest();
+            String requestPath = request.getURI().getPath();
 
-            if (config.isOpenApi(request.getURI().getPath())) {
-                return chain.filter(exchange);
-            }
+            if (config.isOpenApi(requestPath)) return chain.filter(exchange);
 
             if (!request.getHeaders().containsKey(AUTHORIZATION_HEADER)) {
                 return onError(exchange, "No Authorization header", HttpStatus.UNAUTHORIZED);
             }
 
             String authHeader = request.getHeaders().getFirst(AUTHORIZATION_HEADER);
-
             if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
                 return onError(exchange, "Invalid Authorization header format", HttpStatus.UNAUTHORIZED);
             }
 
-//            String token = authHeader.replace(BEARER_PREFIX, "");
+            String token = authHeader.replace(BEARER_PREFIX, "");
+            if (!jwtTokenValidator.tokenValidation(token)) {
+                return onError(exchange, "Invalid or expired token", HttpStatus.UNAUTHORIZED);
+            }
 
-            return chain.filter(exchange.mutate().build());
+            UserInfo userInfo = jwtTokenValidator.extractUserInfo(token);
+            String userInfoJson = userInfo.toJson(objectMapper);
+
+            ServerHttpRequest modifiedRequest = exchange.getRequest()
+                    .mutate()
+                    .header(USER_INFO_HEADER, userInfoJson)
+                    .build();
+
+            return chain.filter(exchange
+                    .mutate()
+                    .request(modifiedRequest)
+                    .build());
         };
     }
 
