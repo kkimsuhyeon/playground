@@ -26,7 +26,9 @@ ext {
 dependencies {
     // Spring Cloud Gateway 코어 의존성
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-    implementation 'org.projectlombok:lombok'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
     // Consul 서비스 디스커버리 통합
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-config'

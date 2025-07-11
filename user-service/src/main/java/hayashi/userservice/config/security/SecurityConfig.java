@@ -1,7 +1,7 @@
 package hayashi.userservice.config.security;
 
+import hayashi.userservice.config.security.filter.AuthUserFilter;
 import hayashi.userservice.config.security.filter.TokenVerificationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,13 +39,17 @@ public class SecurityConfig {
     );
 
     private final TokenVerificationFilter tokenVerificationFilter;
+    private final AuthUserFilter authUserFilter;
+
     private final SecurityAccessDeniedHandler securityAccessDeniedHandler;
     private final SecurityAuthenticationEntryPoint securityAuthenticationEntryPoint;
 
     public SecurityConfig(@Autowired(required = false) TokenVerificationFilter tokenVerificationFilter,
+                          AuthUserFilter authUserFilter,
                           SecurityAccessDeniedHandler securityAccessDeniedHandler,
                           SecurityAuthenticationEntryPoint securityAuthenticationEntryPoint) {
         this.tokenVerificationFilter = tokenVerificationFilter;
+        this.authUserFilter = authUserFilter;
         this.securityAccessDeniedHandler = securityAccessDeniedHandler;
         this.securityAuthenticationEntryPoint = securityAuthenticationEntryPoint;
     }
@@ -63,6 +67,9 @@ public class SecurityConfig {
 
         if (tokenVerificationFilter != null) {
             httpSecurity.addFilterBefore(tokenVerificationFilter, UsernamePasswordAuthenticationFilter.class);
+            httpSecurity.addFilterAfter(authUserFilter, TokenVerificationFilter.class);
+        } else {
+            httpSecurity.addFilterBefore(authUserFilter, UsernamePasswordAuthenticationFilter.class);
         }
 
         return httpSecurity.exceptionHandling(exceptionHandling -> exceptionHandling

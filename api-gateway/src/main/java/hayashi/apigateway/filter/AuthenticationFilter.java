@@ -29,9 +29,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     private final ObjectMapper objectMapper;
     private final JwtTokenValidator jwtTokenValidator;
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-
     public AuthenticationFilter(ObjectMapper objectMapper, JwtTokenValidator jwtTokenValidator) {
         super(Config.class);
         this.objectMapper = objectMapper;
@@ -68,10 +65,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     .header(USER_INFO_HEADER, userInfoJson)
                     .build();
 
-            return chain.filter(exchange
-                    .mutate()
-                    .request(modifiedRequest)
-                    .build());
+            return chain.filter(exchange.mutate().request(modifiedRequest).build());
         };
     }
 

@@ -23,6 +23,9 @@ public class JwtTokenProvider {
     private String expiration;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
+
+        log.info("secretKey: {}", secretKey);
+
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }

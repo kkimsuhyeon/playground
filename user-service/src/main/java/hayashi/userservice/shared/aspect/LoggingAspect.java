@@ -5,6 +5,7 @@ import hayashi.userservice.shared.dto.BaseResponse;
 import hayashi.userservice.shared.event.ErrorLogEvent;
 import hayashi.userservice.shared.event.SuccessLogEvent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor

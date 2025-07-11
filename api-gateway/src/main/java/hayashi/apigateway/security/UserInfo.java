@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @Builder
 public class UserInfo {
@@ -12,6 +14,7 @@ public class UserInfo {
     private String id;
     private String email;
     private String name;
+    private List<String> authorities;
 
     public String toJson(ObjectMapper objectMapper) {
         try {

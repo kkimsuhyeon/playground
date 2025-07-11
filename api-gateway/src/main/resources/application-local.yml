@@ -40,9 +40,6 @@ spring:
             - RewritePath=/api/v*/users/(?<segment>.*), /$\{segment}
             - AuthenticationFilter
             - RemoveRequestHeader=Authorization
-            - AddRequestHeader=X-User-ID, #{@jwtTokenProvider.}
-            - AddRequestHeader=X-User-Role
-            - AddRequestHeader=X-Internal-Request, true
   data:
     redis:
       host: ${REDIS_HOST}

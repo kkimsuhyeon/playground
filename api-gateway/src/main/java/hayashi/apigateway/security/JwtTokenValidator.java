@@ -24,6 +24,8 @@ public class JwtTokenValidator {
     private final ObjectMapper objectMapper;
 
     public JwtTokenValidator(@Value("${jwt.secret}") String secretKey, ObjectMapper objectMapper) {
+
+        log.info("JWT secret key: {}", secretKey);
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
         this.objectMapper = objectMapper;
@@ -70,9 +72,4 @@ public class JwtTokenValidator {
             return null;
         }
     }
-
-    /**
-     * 사용자 정보를 JSON 문자열로 변환합니다.
-     */
-
 }
