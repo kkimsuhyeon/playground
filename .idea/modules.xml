@@ -2,12 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/api-gateway.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/hayashi.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/hayashi.user-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/log-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/log-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/playground.iml" filepath="$PROJECT_DIR$/.idea/playground.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service.test.iml" />
     </modules>
   </component>
 </project>
