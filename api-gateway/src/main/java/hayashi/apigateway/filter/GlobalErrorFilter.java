@@ -30,7 +30,7 @@ public class GlobalErrorFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return chain.filter(exchange)
-                .doOnSuccess(aVoid -> log.debug("Request processed successfully: {}", exchange.getRequest().getURI()))
+                .doOnSuccess(aVoid -> log.info("Request processed successfully: {}", exchange.getRequest().getURI()))
                 .onErrorResume(throwable -> {
                     log.error("Global error occurred for path: {} - {}", exchange.getRequest().getURI().getPath(), throwable.getMessage(), throwable);
                     return handleGlobalError(exchange, throwable);

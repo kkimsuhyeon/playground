@@ -33,12 +33,7 @@ spring:
           lower-case-service-id: true
 
       routes:
-        - id : user-service
-          uri: lb://user-service
-          predicates: Path=/api/v*/users/**
-          filters:
-            - RewritePath=/api/v*/users/(?<segment>.*), /$\{segment}
-            - AuthenticationFilter
+
   data:
     redis:
       host: ${REDIS_HOST}

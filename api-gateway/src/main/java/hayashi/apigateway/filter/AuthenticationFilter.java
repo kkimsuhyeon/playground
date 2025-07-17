@@ -1,22 +1,17 @@
 package hayashi.apigateway.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hayashi.apigateway.exception.ErrorInfo;
+import hayashi.apigateway.exception.ErrorResponseWriter;
 import hayashi.apigateway.security.JwtTokenValidator;
 import hayashi.apigateway.security.UserInfo;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Component
@@ -28,33 +23,40 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     private final ObjectMapper objectMapper;
     private final JwtTokenValidator jwtTokenValidator;
+    private final ErrorResponseWriter errorResponseWriter;
 
-    public AuthenticationFilter(ObjectMapper objectMapper, JwtTokenValidator jwtTokenValidator) {
+    public AuthenticationFilter(ObjectMapper objectMapper, JwtTokenValidator jwtTokenValidator, ErrorResponseWriter errorResponseWriter) {
         super(Config.class);
         this.objectMapper = objectMapper;
         this.jwtTokenValidator = jwtTokenValidator;
+        this.errorResponseWriter = errorResponseWriter;
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
+
             String requestPath = request.getURI().getPath();
+            String requestMethod = request.getMethod().name();
 
             if (config.isOpenApi(requestPath)) return chain.filter(exchange);
 
             if (!request.getHeaders().containsKey(AUTHORIZATION_HEADER)) {
-                return onError(exchange, "No Authorization header", HttpStatus.UNAUTHORIZED);
+                ErrorInfo errorInfo = new ErrorInfo(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", "No Authorization header");
+                return errorResponseWriter.writeErrorResponse(exchange.getResponse(), errorInfo, requestPath, requestMethod);
             }
 
             String authHeader = request.getHeaders().getFirst(AUTHORIZATION_HEADER);
             if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
-                return onError(exchange, "Invalid Authorization header format", HttpStatus.UNAUTHORIZED);
+                ErrorInfo errorInfo = new ErrorInfo(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", "Invalid Authorization header format");
+                return errorResponseWriter.writeErrorResponse(exchange.getResponse(), errorInfo, requestPath, requestMethod);
             }
 
             String token = authHeader.replace(BEARER_PREFIX, "");
             if (!jwtTokenValidator.tokenValidation(token)) {
-                return onError(exchange, "Invalid or expired token", HttpStatus.UNAUTHORIZED);
+                ErrorInfo errorInfo = new ErrorInfo(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", "Invalid token");
+                return errorResponseWriter.writeErrorResponse(exchange.getResponse(), errorInfo, requestPath, requestMethod);
             }
 
             UserInfo userInfo = jwtTokenValidator.extractUserInfo(token);
@@ -68,19 +70,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             return chain.filter(exchange.mutate().request(modifiedRequest).build());
         };
     }
-
-    private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
-        ServerHttpResponse response = exchange.getResponse();
-
-        response.setStatusCode(status);
-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
-        byte[] bytes = (String.format("{\"message\": \"%s\"}", message)).getBytes(StandardCharsets.UTF_8);
-        DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
-
-        return response.writeWith(Mono.just(buffer));
-    }
-
 
     public static class Config {
 
