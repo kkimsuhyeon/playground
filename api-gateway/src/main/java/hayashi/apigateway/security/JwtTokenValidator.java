@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -64,6 +65,7 @@ public class JwtTokenValidator {
                     .id(claims.get("id", String.class))
                     .email(claims.get("email", String.class))
                     .name(claims.get("name", String.class))
+                    .authorities(claims.get("authorities", List.class))
                     .build();
 
         } catch (Exception e) {

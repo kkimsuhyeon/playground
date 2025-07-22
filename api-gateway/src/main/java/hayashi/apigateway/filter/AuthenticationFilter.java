@@ -75,7 +75,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
         private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
-        private List<String> openApiEndpoints = List.of(
+        private final List<String> openApiEndpoints = List.of(
                 "/api/v*/users/login",
                 "/api/v*/users/join",
                 "/api/v*/users/token",

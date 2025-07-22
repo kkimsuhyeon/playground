@@ -1,7 +1,6 @@
 package hayashi.userservice.config.security.service;
 
 import hayashi.userservice.config.security.token.JwtTokenPayload;
-import hayashi.userservice.config.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,10 +12,8 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final AuthUserService authUserService;
-    private final JwtTokenProvider jwtTokenProvider;
 
-    public Authentication getAuthentication(String token) {
-        JwtTokenPayload payload = jwtTokenProvider.getPayload(token);
+    public Authentication getAuthentication(JwtTokenPayload payload) {
 
         UserDetails userDetails = authUserService.loadUserById(payload.getId());
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

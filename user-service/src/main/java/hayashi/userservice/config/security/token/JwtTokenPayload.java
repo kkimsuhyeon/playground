@@ -1,5 +1,6 @@
 package hayashi.userservice.config.security.token;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hayashi.userservice.domain.model.UserEntity;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,7 @@ public class JwtTokenPayload {
         );
     }
 
+    @JsonIgnore
     public List<GrantedAuthority> getGrantedAuthorities() {
         return authorities.stream()
                 .map(SimpleGrantedAuthority::new)
