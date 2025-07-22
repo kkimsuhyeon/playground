@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
@@ -77,7 +78,7 @@ public class GlobalErrorFilter implements GlobalFilter, Ordered {
             return new ErrorInfo(HttpStatus.GATEWAY_TIMEOUT, "GATEWAY_TIMEOUT", "요청 처리 시간이 초과되었습니다.");
         }
 
-        if (throwable.getMessage() != null && throwable.getMessage().contains("404")) {
+        if (throwable instanceof NotFoundException || (throwable.getMessage() != null && throwable.getMessage().contains("404"))) {
             return new ErrorInfo(HttpStatus.NOT_FOUND, "ROUTE_NOT_FOUND", "요청한 경로를 찾을 수 없습니다.");
         }
 

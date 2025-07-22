@@ -12,6 +12,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -52,10 +54,21 @@ public class ErrorResponseWriter {
     }
 
     private Mono<Void> writeFallbackResponse(ServerHttpResponse response, ErrorInfo errorInfo) {
-        String fallbackResponse = String.format(
-                "{\"code\":\"%s\",\"message\":\"%s\",\"timestamp\":%d}",
-                errorInfo.getCode(), errorInfo.getMessage(), System.currentTimeMillis()
-        );
+        String fallbackResponse;
+
+        try {
+            Map<String, Object> fallbackMap = new HashMap<>();
+            fallbackMap.put("code", errorInfo.getCode());
+            fallbackMap.put("message", errorInfo.getMessage());
+            fallbackMap.put("timestamp", System.currentTimeMillis());
+
+            fallbackResponse = objectMapper.writeValueAsString(fallbackMap);
+
+        } catch (Exception e) {
+            log.error("Failed to serialize fallback response with ObjectMapper, using hardcoded JSON.", e);
+            fallbackResponse = String.format("{\"code\":\"%s\",\"message\":\"%s\",\"timestamp\":%d}", "INTERNAL_SERVER_ERROR", "An unexpected error occurred.", System.currentTimeMillis());
+        }
+
         DataBuffer buffer = response.bufferFactory().wrap(fallbackResponse.getBytes(StandardCharsets.UTF_8));
         return response.writeWith(Mono.just(buffer));
     }

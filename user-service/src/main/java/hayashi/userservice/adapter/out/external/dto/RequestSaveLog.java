@@ -28,7 +28,7 @@ public class RequestSaveLog {
 
     private Object response;
 
-    public static RequestSaveLog create(ServletRequestAttributes attr, JoinPoint joinPoint, BaseResponse<?> response) {
+    public static RequestSaveLog create(ServletRequestAttributes attr, JoinPoint joinPoint, Object response) {
 
         String userId = SecurityUtils.getCurrentUserId();
         String requestURI = Objects.requireNonNull(attr).getRequest().getRequestURI();

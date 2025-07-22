@@ -60,6 +60,11 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             }
 
             UserInfo userInfo = jwtTokenValidator.extractUserInfo(token);
+            if (userInfo == null) {
+                ErrorInfo errorInfo = new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, "TOKEN_PARSE_ERROR", "Failed to extract user info from token");
+                return errorResponseWriter.writeErrorResponse(exchange.getResponse(), errorInfo, requestPath, requestMethod);
+            }
+            
             String userInfoJson = userInfo.toJson(objectMapper);
 
             ServerHttpRequest modifiedRequest = exchange.getRequest()
