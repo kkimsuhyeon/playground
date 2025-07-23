@@ -1,5 +1,6 @@
 package hayashi.apigateway.filter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hayashi.apigateway.exception.ErrorInfo;
 import hayashi.apigateway.exception.ErrorResponse;
@@ -19,6 +20,8 @@ import reactor.core.publisher.Mono;
 
 import java.net.ConnectException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
@@ -90,7 +93,19 @@ public class GlobalErrorFilter implements GlobalFilter, Ordered {
     }
 
     private Mono<Void> createFallbackResponse(ServerHttpResponse response, ErrorInfo errorInfo) {
-        String fallbackResponse = String.format("{\"code\":\"%s\",\"message\":\"%s\",\"timestamp\":%d}", errorInfo.getCode(), errorInfo.getMessage(), System.currentTimeMillis());
+        String fallbackResponse;
+
+        try {
+            Map<String, Object> fallbackMap = new HashMap<>();
+            fallbackMap.put("code", errorInfo.getCode());
+            fallbackMap.put("message", errorInfo.getMessage());
+            fallbackMap.put("timestamp", System.currentTimeMillis());
+            fallbackResponse = objectMapper.writeValueAsString(fallbackMap);
+
+        } catch (JsonProcessingException e) {
+            log.error("Failed to serialize fallback response with ObjectMapper, using hardcoded JSON.", e);
+            fallbackResponse = String.format("{\"code\":\"%s\",\"message\":\"%s\",\"timestamp\":%d}", "INTERNAL_SERVER_ERROR", "An unexpected error occurred.", System.currentTimeMillis());
+        }
 
         DataBuffer buffer = response.bufferFactory().wrap(fallbackResponse.getBytes(StandardCharsets.UTF_8));
         return response.writeWith(Mono.just(buffer));
