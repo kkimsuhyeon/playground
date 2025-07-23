@@ -16,12 +16,8 @@ public class UserInfo {
     private String name;
     private List<String> authorities;
 
-    public String toJson(ObjectMapper objectMapper) {
-        try {
-            return objectMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public String toJson(ObjectMapper objectMapper) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(this);
     }
 
 }

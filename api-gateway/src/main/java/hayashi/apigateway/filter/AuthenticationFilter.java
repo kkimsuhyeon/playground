@@ -64,15 +64,20 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 ErrorInfo errorInfo = new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, "TOKEN_PARSE_ERROR", "Failed to extract user info from token");
                 return errorResponseWriter.writeErrorResponse(exchange.getResponse(), errorInfo, requestPath, requestMethod);
             }
-            
-            String userInfoJson = userInfo.toJson(objectMapper);
 
-            ServerHttpRequest modifiedRequest = exchange.getRequest()
-                    .mutate()
-                    .header(USER_INFO_HEADER, userInfoJson)
-                    .build();
+            try {
+                String userInfoJson = userInfo.toJson(objectMapper);
 
-            return chain.filter(exchange.mutate().request(modifiedRequest).build());
+                ServerHttpRequest modifiedRequest = exchange.getRequest()
+                        .mutate()
+                        .header(USER_INFO_HEADER, userInfoJson)
+                        .build();
+
+                return chain.filter(exchange.mutate().request(modifiedRequest).build());
+            } catch (Exception e) {
+                ErrorInfo errorInfo = new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, "USER_INFO_SERIALIZE_ERROR", "Failed to serialize user info");
+                return errorResponseWriter.writeErrorResponse(exchange.getResponse(), errorInfo, requestPath, requestMethod);
+            }
         };
     }
 
