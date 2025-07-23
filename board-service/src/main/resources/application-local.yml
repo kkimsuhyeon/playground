@@ -1,0 +1,81 @@
+server:
+  port: 8082
+
+host: "localhost"
+host-url: "http://localhost:8082"
+
+spring:
+  application:
+    name: board-service
+
+  config:
+    import: "consul:"
+    activate:
+      on-profile: local
+
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        instance-id: ${spring.application.name}:${random.value}
+        health-check-path: /actuator/health
+        health-check-interval: 15s
+        prefer-ip-address: true
+        register-health-check: false
+      config:
+        enabled: true
+        format: key_value
+        prefixes: config
+        default-context: application
+        fail-fast: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:3306/user_service_db?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+      password: ${REDIS_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        use_sql_comments: true
+        format_sql: true
+        show_sql: true
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /user-service/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /user-service/swagger-ui.html
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      show-details: always
+
+hayashi:
+  encrypt:
+    key: ${ENCRYPT_KEY}
+
+external:
+  log-service.url: http://localhost:8089
