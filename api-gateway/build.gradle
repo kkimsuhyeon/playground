@@ -27,6 +27,9 @@ dependencies {
     // Spring Cloud Gateway 코어 의존성
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
 
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     // Consul 서비스 디스커버리 통합
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
@@ -37,13 +40,15 @@ dependencies {
     // 로깅 및 모니터링
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
     implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.6'
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.4.4'
-
-    // JWT 검증을 위한 의존성
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     // 테스트
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

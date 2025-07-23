@@ -1,7 +1,8 @@
 package hayashi.userservice.config.security;
 
+import hayashi.userservice.config.security.filter.AuthUserFilter;
 import hayashi.userservice.config.security.filter.TokenVerificationFilter;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +20,6 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     public static final List<String> ALLOWED_OPTION_URI = List.of(
@@ -39,22 +39,40 @@ public class SecurityConfig {
     );
 
     private final TokenVerificationFilter tokenVerificationFilter;
+    private final AuthUserFilter authUserFilter;
 
     private final SecurityAccessDeniedHandler securityAccessDeniedHandler;
     private final SecurityAuthenticationEntryPoint securityAuthenticationEntryPoint;
 
+    public SecurityConfig(@Autowired(required = false) TokenVerificationFilter tokenVerificationFilter,
+                          AuthUserFilter authUserFilter,
+                          SecurityAccessDeniedHandler securityAccessDeniedHandler,
+                          SecurityAuthenticationEntryPoint securityAuthenticationEntryPoint) {
+        this.tokenVerificationFilter = tokenVerificationFilter;
+        this.authUserFilter = authUserFilter;
+        this.securityAccessDeniedHandler = securityAccessDeniedHandler;
+        this.securityAuthenticationEntryPoint = securityAuthenticationEntryPoint;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        return http
+        HttpSecurity httpSecurity = http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(ALLOWED_OPTION_URI.toArray(String[]::new)).permitAll()
                         .requestMatchers(ALLOWED_BUSINESS_URI.toArray(String[]::new)).permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(tokenVerificationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .anyRequest().authenticated());
+
+        if (tokenVerificationFilter != null) {
+            httpSecurity.addFilterBefore(tokenVerificationFilter, UsernamePasswordAuthenticationFilter.class);
+            httpSecurity.addFilterAfter(authUserFilter, TokenVerificationFilter.class);
+        } else {
+            httpSecurity.addFilterBefore(authUserFilter, UsernamePasswordAuthenticationFilter.class);
+        }
+
+        return httpSecurity.exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(securityAuthenticationEntryPoint)
                         .accessDeniedHandler(securityAccessDeniedHandler)
                 )

@@ -94,6 +94,8 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - CONSUL_HOST=consul-server
       - CONSUL_PORT=8500
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     depends_on:
       consul-server:
         condition: service_healthy

@@ -5,6 +5,7 @@ import hayashi.userservice.shared.dto.BaseResponse;
 import hayashi.userservice.shared.event.ErrorLogEvent;
 import hayashi.userservice.shared.event.SuccessLogEvent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
@@ -22,12 +24,12 @@ public class LoggingAspect {
 
     private final ApplicationEventPublisher eventPublisher;
 
-    @AfterReturning(pointcut = "execution(* hayashi.userservice..*Controller.*(..))", returning = "result")
+    @AfterReturning(pointcut = "execution(* hayashi.userservice..*UseCase.*(..))", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        BaseResponse<?> response = (BaseResponse<?>) ((ResponseEntity<?>) result).getBody();
+//        BaseResponse<?> response = (BaseResponse<?>) ((ResponseEntity<?>) result).getBody();
 
-        RequestSaveLog request = RequestSaveLog.create(attr, joinPoint, response);
+        RequestSaveLog request = RequestSaveLog.create(attr, joinPoint, result);
         eventPublisher.publishEvent(new SuccessLogEvent(this, request));
     }
 

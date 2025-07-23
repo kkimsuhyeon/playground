@@ -23,6 +23,7 @@ public class LogEventListener {
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleSuccessLog(SuccessLogEvent event) {
+        log.info("[handleSuccessLog]: {}", event.getData());
         try {
             logServiceClient.saveLog(event.getData());
         } catch (Exception e) {
