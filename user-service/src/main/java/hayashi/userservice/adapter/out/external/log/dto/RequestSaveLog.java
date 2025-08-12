@@ -1,7 +1,6 @@
-package hayashi.userservice.adapter.out.external.dto;
+package hayashi.userservice.adapter.out.external.log.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import hayashi.userservice.shared.dto.BaseResponse;
 import hayashi.userservice.shared.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package hayashi.userservice.shared.event.listener;
 
-import hayashi.userservice.adapter.out.external.client.LogServiceClient;
+import hayashi.userservice.application.port.LogPort;
 import hayashi.userservice.shared.event.ErrorLogEvent;
 import hayashi.userservice.shared.event.SuccessLogEvent;
 import lombok.RequiredArgsConstructor;
@@ -18,28 +18,31 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class LogEventListener {
 
-    private final LogServiceClient logServiceClient;
+    private final LogPort logPort;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleSuccessLog(SuccessLogEvent event) {
-        log.info("[handleSuccessLog]: {}", event.getData());
-        try {
-            logServiceClient.saveLog(event.getData());
-        } catch (Exception e) {
-            log.error("[handleSuccessLog]: fail to save log : ", e);
-        }
+        log.info("[handleSuccessLog]: request save log {}", event.getData());
+
+        logPort.save(event.getData())
+                .doOnSuccess(aVoid -> log.info("[handleSuccessLog]: success to save log"))
+                .doOnError(throwable -> log.error("[handleSuccessLog]: fail to save log : ", throwable))
+                .onErrorComplete()
+                .subscribe();
     }
 
     @Async
     @EventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleErrorLog(ErrorLogEvent event) {
-        try {
-            logServiceClient.saveLog(event.getData());
-        } catch (Exception e) {
-            log.error("[handleErrorLog]: fail to save log : ", e);
-        }
+        log.info("[handleErrorLog]: request save log {}", event.getData());
+
+        logPort.save(event.getData())
+                .doOnSuccess(aVoid -> log.info("[handleErrorLog]: success to save log"))
+                .doOnError(throwable -> log.error("[handleErrorLog]: fail to save log : ", throwable))
+                .onErrorComplete()
+                .subscribe();
     }
 
 }
