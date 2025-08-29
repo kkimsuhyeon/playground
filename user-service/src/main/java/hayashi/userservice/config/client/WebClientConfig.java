@@ -38,7 +38,7 @@ public class WebClientConfig {
 
     @Bean
     @Qualifier("logServiceWebClient")
-    public WebClient logServiceWebClient(@LoadBalanced WebClient.Builder webClientBuilder) {
+    public WebClient logServiceWebClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
                 .baseUrl(logServiceUrl)
                 .build();
