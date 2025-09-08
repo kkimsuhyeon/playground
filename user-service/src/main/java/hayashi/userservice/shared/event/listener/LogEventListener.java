@@ -1,5 +1,6 @@
 package hayashi.userservice.shared.event.listener;
 
+import hayashi.userservice.adapter.out.external.log.dto.RequestSaveLog;
 import hayashi.userservice.application.port.LogPort;
 import hayashi.userservice.shared.event.ErrorLogEvent;
 import hayashi.userservice.shared.event.SuccessLogEvent;
@@ -24,12 +25,7 @@ public class LogEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleSuccessLog(SuccessLogEvent event) {
         log.info("[handleSuccessLog]: request save log {}", event.getData());
-
-        logPort.save(event.getData())
-                .doOnSuccess(aVoid -> log.info("[handleSuccessLog]: success to save log"))
-                .doOnError(throwable -> log.error("[handleSuccessLog]: fail to save log : ", throwable))
-                .onErrorComplete()
-                .subscribe();
+        saveLog(event.getData(), "handleSuccessLog");
     }
 
     @Async
@@ -37,10 +33,13 @@ public class LogEventListener {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void handleErrorLog(ErrorLogEvent event) {
         log.info("[handleErrorLog]: request save log {}", event.getData());
+        saveLog(event.getData(), "handleErrorLog");
+    }
 
-        logPort.save(event.getData())
-                .doOnSuccess(aVoid -> log.info("[handleErrorLog]: success to save log"))
-                .doOnError(throwable -> log.error("[handleErrorLog]: fail to save log : ", throwable))
+    private void saveLog(RequestSaveLog request, String prefix) {
+        logPort.save(request)
+                .doOnSuccess(aVoid -> log.info("[{}]: success to save log", prefix))
+                .doOnError(throwable -> log.error("[{}]: fail to save log : ", prefix))
                 .onErrorComplete()
                 .subscribe();
     }

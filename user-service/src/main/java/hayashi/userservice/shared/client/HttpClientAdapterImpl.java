@@ -85,6 +85,9 @@ public class HttpClientAdapterImpl implements HttpClientAdapter {
                                 .rawBody(rawBody)
                                 .build()
                         );
+                    } catch (JsonProcessingException e) {
+                        log.error("JSON parsing failed for response body: {}, error: {}", rawBody, e.getMessage());
+                        return Mono.error(e);
                     } catch (Exception e) {
                         log.error("Failed to parse response body: {}", rawBody);
                         return Mono.error(e);
