@@ -61,7 +61,7 @@ public class WebClientConfig {
 
         ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
                 .codecs(configure -> {
-                    configure.defaultCodecs().maxInMemorySize(20 * 1024 * 1024); // 메모리 버퍼 크기 20MB
+                    configure.defaultCodecs().maxInMemorySize(10 * 1024 * 1024); // 메모리 버퍼 크기 10MB
                     configure.defaultCodecs().enableLoggingRequestDetails(true); // 요청 로깅
                 })
                 .build();
@@ -70,8 +70,8 @@ public class WebClientConfig {
                 .defaultHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(org.springframework.http.HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .filter(ExchangeFilterFunction.ofRequestProcessor(this::handleRequest))
-                .filter(ExchangeFilterFunction.ofResponseProcessor(this::handleErrors))
                 .filter(ExchangeFilterFunction.ofResponseProcessor(this::handleResponse))
+                .filter(ExchangeFilterFunction.ofResponseProcessor(this::handleErrors))
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .exchangeStrategies(exchangeStrategies);
     }

@@ -39,7 +39,7 @@ public class LogEventListener {
     private void saveLog(RequestSaveLog request, String prefix) {
         logPort.save(request)
                 .doOnSuccess(aVoid -> log.info("[{}]: success to save log", prefix))
-                .doOnError(throwable -> log.error("[{}]: fail to save log : ", prefix))
+                .doOnError(throwable -> log.error("[{}]: fail to save log : ", prefix, throwable))
                 .onErrorComplete()
                 .subscribe();
     }

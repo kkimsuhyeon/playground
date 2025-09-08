@@ -37,9 +37,7 @@ public class HttpClientAdapterImpl implements HttpClientAdapter {
                 .method(request.getMethod())
                 .uri(request.getUri())
                 .headers(headers -> {
-                    if (request.getHeaders() != null && !request.getHeaders().isEmpty()) {
-                        headers.addAll(request.getHeaders());
-                    }
+                    if (!request.getHeaders().isEmpty()) headers.addAll(request.getHeaders());
                 });
 
         if (request.getBody() != null && !isBodylessMethod(request.getMethod())) {
@@ -89,7 +87,7 @@ public class HttpClientAdapterImpl implements HttpClientAdapter {
                         log.error("JSON parsing failed for response body: {}, error: {}", rawBody, e.getMessage());
                         return Mono.error(e);
                     } catch (Exception e) {
-                        log.error("Failed to parse response body: {}", rawBody);
+                        log.error("Failed to parse response body: {}", rawBody, e);
                         return Mono.error(e);
                     }
                 }).switchIfEmpty(Mono.defer(() -> Mono.just(HttpClientResponse.<T>builder()

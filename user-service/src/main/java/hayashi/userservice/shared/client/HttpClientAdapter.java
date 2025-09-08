@@ -1,7 +1,6 @@
 package hayashi.userservice.shared.client;
 
 import com.fasterxml.jackson.databind.JavaType;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 

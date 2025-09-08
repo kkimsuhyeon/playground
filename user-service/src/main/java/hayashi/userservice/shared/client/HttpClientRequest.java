@@ -23,8 +23,6 @@ public class HttpClientRequest<T> {
     private T body;
 
     public HttpClientRequest<T> addHeader(String name, String value) {
-        if (this.headers == null) this.headers = new HttpHeaders();
-
         this.headers.add(name, value);
         return this;
     }
