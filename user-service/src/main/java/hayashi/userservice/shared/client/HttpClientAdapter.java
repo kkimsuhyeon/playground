@@ -1,13 +1,13 @@
 package hayashi.userservice.shared.client;
 
+import com.fasterxml.jackson.databind.JavaType;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 public interface HttpClientAdapter {
 
-    <T> Mono<T> get(WebClient webClient, String url, Class<T> responseType);
+    <REQUEST, RESPONSE> Mono<HttpClientResponse<RESPONSE>> execute(WebClient webClient, HttpClientRequest<REQUEST> request, Class<RESPONSE> responseType);
 
-    <T> Mono<T> get(WebClient webClient, String url, ParameterizedTypeReference<T> responseType);
-
+    <REQUEST, RESPONSE> Mono<HttpClientResponse<RESPONSE>> execute(WebClient webClient, HttpClientRequest<REQUEST> request, JavaType responseType);
 }
