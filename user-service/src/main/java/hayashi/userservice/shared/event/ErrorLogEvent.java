@@ -1,6 +1,6 @@
 package hayashi.userservice.shared.event;
 
-import hayashi.userservice.adapter.out.external.dto.RequestSaveLog;
+import hayashi.userservice.adapter.out.external.log.dto.RequestSaveLog;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

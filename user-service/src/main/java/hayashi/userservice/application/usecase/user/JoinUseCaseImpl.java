@@ -19,8 +19,6 @@ public class JoinUseCaseImpl implements JoinUseCase {
     @Override
     public UserEntity join(JoinUserCommand command) {
         UserEntity entity = userCommandFactory.toEntity(command);
-        userService.create(entity);
-
-        return entity;
+        return userService.create(entity);
     }
 }

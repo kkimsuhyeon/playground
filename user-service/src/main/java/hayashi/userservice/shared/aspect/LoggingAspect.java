@@ -1,7 +1,6 @@
 package hayashi.userservice.shared.aspect;
 
-import hayashi.userservice.adapter.out.external.dto.RequestSaveLog;
-import hayashi.userservice.shared.dto.BaseResponse;
+import hayashi.userservice.adapter.out.external.log.dto.RequestSaveLog;
 import hayashi.userservice.shared.event.ErrorLogEvent;
 import hayashi.userservice.shared.event.SuccessLogEvent;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
