@@ -1,11 +1,14 @@
 package hayashi.userservice.shared.jpa;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 
-public class SpecificationUtils {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SpecificationUtils {
 
     public static <T> Specification<T> likeIgnoreCase(String fieldName, String value) {
         return (root, query, criteriaBuilder) -> {

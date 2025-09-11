@@ -36,7 +36,7 @@ public class UserRepositoryAdapter implements UserRepository {
     public Page<UserEntity> searchUsers(String name, String email, Pageable pageable) {
         Specification<UserEntity> spec = Specification
                 .where(UserSpecification.hasName(name))
-                .and(UserSpecification.hasEmail(email));
+                .or(UserSpecification.hasEmail(email));
         
         return userJpaRepository.findAll(spec, pageable);
     }
