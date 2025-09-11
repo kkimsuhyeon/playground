@@ -8,6 +8,7 @@ import org.aspectj.lang.JoinPoint;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Data
@@ -32,7 +33,7 @@ public class RequestSaveLog {
         String userId = SecurityUtils.getCurrentUserId();
         String requestURI = Objects.requireNonNull(attr).getRequest().getRequestURI();
         String requestMethod = Objects.requireNonNull(attr).getRequest().getMethod();
-        Object requestData = joinPoint.getArgs();
+        Object requestData = Arrays.deepToString(joinPoint.getArgs());
 
         return new RequestSaveLog(userId, requestURI, requestMethod, requestData, LocalDateTime.now(), response);
     }
@@ -42,7 +43,7 @@ public class RequestSaveLog {
         String userId = SecurityUtils.getCurrentUserId();
         String requestURI = Objects.requireNonNull(attr).getRequest().getRequestURI();
         String requestMethod = Objects.requireNonNull(attr).getRequest().getMethod();
-        Object requestData = joinPoint.getArgs();
+        Object requestData = Arrays.deepToString(joinPoint.getArgs());
 
         return new RequestSaveLog(userId, requestURI, requestMethod, requestData, LocalDateTime.now(), response);
     }
