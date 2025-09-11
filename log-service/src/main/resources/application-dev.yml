@@ -22,6 +22,7 @@ spring:
         health-check-path: /actuator/health
         health-check-interval: 15s
         prefer-ip-address: true
+        deregister: true
       config:
         enabled: true
         format: key_value

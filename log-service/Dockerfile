@@ -14,6 +14,12 @@ RUN gradle build --no-daemon -x test --build-cache
 # 실행 스테이지
 FROM openjdk:17-jdk-slim
 
+# 개발/학습 편의를 위해 최소한 추가
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY --from=build /app/build/libs/*.jar app.jar
