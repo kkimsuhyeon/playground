@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,7 @@ public class UserController {
     public ResponseEntity<BaseResponse<Page<UserResponse>>> getUsers(
             @Parameter(description = "이름", in = ParameterIn.QUERY) @RequestParam(required = false, name = "name") String name,
             @Parameter(description = "이메일", in = ParameterIn.QUERY) @RequestParam(required = false, name = "email") String email,
-            Pageable pageable
+            @ParameterObject Pageable pageable
     ) {
         Page<UserResponse> response = userQueryUseCase.getUsers(name, email, pageable)
                 .map(UserResponse::from);

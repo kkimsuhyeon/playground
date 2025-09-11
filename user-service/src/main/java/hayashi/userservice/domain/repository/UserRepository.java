@@ -14,13 +14,6 @@ public interface UserRepository {
 
     UserEntity save(UserEntity user);
 
-    Page<UserEntity> findAll(Pageable pageable);
-
-    Page<UserEntity> findByNameContaining(String name, Pageable pageable);
-
-    Page<UserEntity> findByEmailContaining(String email, Pageable pageable);
-
-    Page<UserEntity> findByNameContainingOrEmailContaining(String name, String email, Pageable pageable);
-
+    Page<UserEntity> searchUsers(String name, String email, Pageable pageable);
 
 }
