@@ -26,19 +26,17 @@ services:
       retries: 5
       start_period: 40s
 
-  user-db:
+  main-db:
     image: mysql
-    container_name: user-db
+    container_name: main-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: user_service_db
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
-      - user-db-data:/var/lib/mysql
+      - main-db-data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d:ro
     networks:
       - microservice-network
 
@@ -161,7 +159,7 @@ services:
     depends_on:
       consul-server:
         condition: service_healthy
-      user-db:
+      main-db:
         condition: service_started
       redis:
         condition: service_healthy
@@ -179,7 +177,7 @@ services:
 volumes:
   consul-data:
   consul-config:
-  user-db-data:
+  main-db-data:
   redis-data:
   log-db-data:
 
